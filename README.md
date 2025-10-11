@@ -1,5 +1,6 @@
 # Thermal Solver
 A Python-based thermal systems solver!
+Created by **The Nameless** as a project for Cal Poly Pomona's ME 4990 course in Machine Learning and Object Oriented Programming
 
 <img width="623" height="416" alt="image" src="https://github.com/user-attachments/assets/4feb9449-b3e5-4c7c-9463-d8c32df84218" />
 
