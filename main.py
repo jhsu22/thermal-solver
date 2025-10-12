@@ -6,7 +6,9 @@ A Python-based thermal systems solver!
 
 Created as a project for Cal Poly Pomona's ME 4990 course
 """
+
 import tkinter
+from tkextrafont import Font
 
 import customtkinter as ctk
 from PIL import Image
@@ -14,6 +16,9 @@ from PIL import Image
 class ThermalSolver(ctk.CTk):
     def __init__(self):
         super().__init__()
+
+        # Load custom font
+        Font(file="fonts/PixelifySans.ttf", family="Pixelify Sans", size=12)
 
         # Window Configuration
         self.title("Thermal Solver")
@@ -202,7 +207,7 @@ class SettingsFrame(ctk.CTkFrame):
             main_frame,
             text="Calculator Units",
             text_color="black",
-            font=ctk.CTkFont(size=14)
+            font=ctk.CTkFont(size=16)
         )
         units_label.pack(padx=25, pady=0, anchor="w")
 
@@ -216,7 +221,7 @@ class SettingsFrame(ctk.CTkFrame):
             corner_radius=0,
             text="SI Units",
             text_color="black",
-            font=ctk.CTkFont(size=12),
+            font=ctk.CTkFont(size=14),
             variable=units,
             value=1
         )
@@ -227,69 +232,251 @@ class SettingsFrame(ctk.CTkFrame):
             corner_radius=0,
             text="Imperial Units",
             text_color="black",
-            font=ctk.CTkFont(size=12),
+            font=ctk.CTkFont(size=14),
             variable=units,
             value=2
         )
         imperial_button.pack(padx=25, side="left")
-
 
 class PipingFrame(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
 
-        # Add a back button to return to the main menu
-        back_button = ctk.CTkButton(self, text="← Back to Menu", command=lambda: controller.show_frame(MenuFrame))
-        back_button.pack(pady=10, padx=10, anchor="nw")
+        # Create main and header frames
+        main_frame = ctk.CTkFrame(self, fg_color="#A9CEFF")
+        main_frame.pack(padx=0, pady=0, fill="both", expand=True)
 
-        # Title for this page
-        title_label = ctk.CTkLabel(self, text="Piping Solver", font=ctk.CTkFont(size=24))
-        title_label.pack(pady=10, padx=20)
+        header_frame = ctk.CTkFrame(main_frame, fg_color="#7CB5FF", corner_radius=0)
+        header_frame.pack(ipady=5, padx=0, fill="x")
 
-        # The rest of your content for this page goes here
-        content_label = ctk.CTkLabel(self, text="All Piping solver widgets and logic will go here.")
-        content_label.pack(pady=20, padx=20, expand=True)
+        back_button = ctk.CTkButton(
+            header_frame,
+            text="← Back to Menu",
+            text_color="black",
+            font=ctk.CTkFont(size=14),
+            fg_color="#689CE0",
+            hover_color="#5480BA",
+            height=45,
+            width=150,
+            command=lambda: controller.show_frame(MenuFrame)
+        )
+        back_button.pack(side="right", anchor="e", padx=10)
+
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="THERMAL SOLVER",
+            text_color="black",
+            font=ctk.CTkFont(size=32)
+        )
+        title_label.pack(padx=10, pady=8, anchor="w")
+
+        subtitle_label = ctk.CTkLabel(
+            header_frame,
+            text="PIPING",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
+        subtitle_label.pack(padx=10, anchor="w")
 
 class BoilCondFrame(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        back_button = ctk.CTkButton(self, text="← Back to Menu", command=lambda: controller.show_frame(MenuFrame))
-        back_button.pack(pady=10, padx=10, anchor="nw")
-        label = ctk.CTkLabel(self, text="Boiling Condensation Page", font=ctk.CTkFont(size=24))
-        label.pack(pady=20, padx=20, expand=True)
+
+        # Create main and header frames
+        main_frame = ctk.CTkFrame(self, fg_color="#A9CEFF")
+        main_frame.pack(padx=0, pady=0, fill="both", expand=True)
+
+        header_frame = ctk.CTkFrame(main_frame, fg_color="#7CB5FF", corner_radius=0)
+        header_frame.pack(ipady=5, padx=0, fill="x")
+
+        back_button = ctk.CTkButton(
+            header_frame,
+            text="← Back to Menu",
+            text_color="black",
+            font=ctk.CTkFont(size=14),
+            fg_color="#689CE0",
+            hover_color="#5480BA",
+            height=45,
+            width=150,
+            command=lambda: controller.show_frame(MenuFrame)
+        )
+        back_button.pack(side="right", anchor="e", padx=10)
+
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="THERMAL SOLVER",
+            text_color="black",
+            font=ctk.CTkFont(size=32)
+        )
+        title_label.pack(padx=10, pady=8, anchor="w")
+
+        subtitle_label = ctk.CTkLabel(
+            header_frame,
+            text="BOILING CONDENSATION",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
+        subtitle_label.pack(padx=10, anchor="w")
 
 class DoublePipeFrame(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        back_button = ctk.CTkButton(self, text="← Back to Menu", command=lambda: controller.show_frame(MenuFrame))
-        back_button.pack(pady=10, padx=10, anchor="nw")
-        label = ctk.CTkLabel(self, text="Double Pipe HX Page", font=ctk.CTkFont(size=24))
-        label.pack(pady=20, padx=20, expand=True)
+        # Create main and header frames
+        main_frame = ctk.CTkFrame(self, fg_color="#A9CEFF")
+        main_frame.pack(padx=0, pady=0, fill="both", expand=True)
+
+        header_frame = ctk.CTkFrame(main_frame, fg_color="#7CB5FF", corner_radius=0)
+        header_frame.pack(ipady=5, padx=0, fill="x")
+
+        back_button = ctk.CTkButton(
+            header_frame,
+            text="← Back to Menu",
+            text_color="black",
+            font=ctk.CTkFont(size=14),
+            fg_color="#689CE0",
+            hover_color="#5480BA",
+            height=45,
+            width=150,
+            command=lambda: controller.show_frame(MenuFrame)
+        )
+        back_button.pack(side="right", anchor="e", padx=10)
+
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="THERMAL SOLVER",
+            text_color="black",
+            font=ctk.CTkFont(size=32)
+        )
+        title_label.pack(padx=10, pady=8, anchor="w")
+
+        subtitle_label = ctk.CTkLabel(
+            header_frame,
+            text="DOUBLE PIPE HEAT EXCHANGER",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
+        subtitle_label.pack(padx=10, anchor="w")
 
 class PlateFrameFrame(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        back_button = ctk.CTkButton(self, text="← Back to Menu", command=lambda: controller.show_frame(MenuFrame))
-        back_button.pack(pady=10, padx=10, anchor="nw")
-        label = ctk.CTkLabel(self, text="Plate and Frame HX Page", font=ctk.CTkFont(size=24))
-        label.pack(pady=20, padx=20, expand=True)
+
+        # Create main and header frames
+        main_frame = ctk.CTkFrame(self, fg_color="#A9CEFF")
+        main_frame.pack(padx=0, pady=0, fill="both", expand=True)
+
+        header_frame = ctk.CTkFrame(main_frame, fg_color="#7CB5FF", corner_radius=0)
+        header_frame.pack(ipady=5, padx=0, fill="x")
+
+        back_button = ctk.CTkButton(
+            header_frame,
+            text="← Back to Menu",
+            text_color="black",
+            font=ctk.CTkFont(size=14),
+            fg_color="#689CE0",
+            hover_color="#5480BA",
+            height=45,
+            width=150,
+            command=lambda: controller.show_frame(MenuFrame)
+        )
+        back_button.pack(side="right", anchor="e", padx=10)
+
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="THERMAL SOLVER",
+            text_color="black",
+            font=ctk.CTkFont(size=32)
+        )
+        title_label.pack(padx=10, pady=8, anchor="w")
+
+        subtitle_label = ctk.CTkLabel(
+            header_frame,
+            text="PLATE AND FRAME HEAT EXCHANGER",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
+        subtitle_label.pack(padx=10, anchor="w")
 
 class ShellTubeFrame(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        back_button = ctk.CTkButton(self, text="← Back to Menu", command=lambda: controller.show_frame(MenuFrame))
-        back_button.pack(pady=10, padx=10, anchor="nw")
-        label = ctk.CTkLabel(self, text="Shell and Tube HX Page", font=ctk.CTkFont(size=24))
-        label.pack(pady=20, padx=20, expand=True)
+
+        # Create main and header frames
+        main_frame = ctk.CTkFrame(self, fg_color="#A9CEFF")
+        main_frame.pack(padx=0, pady=0, fill="both", expand=True)
+
+        header_frame = ctk.CTkFrame(main_frame, fg_color="#7CB5FF", corner_radius=0)
+        header_frame.pack(ipady=5, padx=0, fill="x")
+
+        back_button = ctk.CTkButton(
+            header_frame,
+            text="← Back to Menu",
+            text_color="black",
+            font=ctk.CTkFont(size=14),
+            fg_color="#689CE0",
+            hover_color="#5480BA",
+            height=45,
+            width=150,
+            command=lambda: controller.show_frame(MenuFrame)
+        )
+        back_button.pack(side="right", anchor="e", padx=10)
+
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="THERMAL SOLVER",
+            text_color="black",
+            font=ctk.CTkFont(size=32)
+        )
+        title_label.pack(padx=10, pady=8, anchor="w")
+
+        subtitle_label = ctk.CTkLabel(
+            header_frame,
+            text="SHELL AND TUBE HEAT EXCHANGER",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
+        subtitle_label.pack(padx=10, anchor="w")
 
 class HeatPipeFrame(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        back_button = ctk.CTkButton(self, text="← Back to Menu", command=lambda: controller.show_frame(MenuFrame))
-        back_button.pack(pady=10, padx=10, anchor="nw")
-        label = ctk.CTkLabel(self, text="Heat Pipe Page", font=ctk.CTkFont(size=24))
-        label.pack(pady=20, padx=20, expand=True)
+
+        # Create main and header frames
+        main_frame = ctk.CTkFrame(self, fg_color="#A9CEFF")
+        main_frame.pack(padx=0, pady=0, fill="both", expand=True)
+
+        header_frame = ctk.CTkFrame(main_frame, fg_color="#7CB5FF", corner_radius=0)
+        header_frame.pack(ipady=5, padx=0, fill="x")
+
+        back_button = ctk.CTkButton(
+            header_frame,
+            text="← Back to Menu",
+            text_color="black",
+            font=ctk.CTkFont(size=14),
+            fg_color="#689CE0",
+            hover_color="#5480BA",
+            height=45,
+            width=150,
+            command=lambda: controller.show_frame(MenuFrame)
+        )
+        back_button.pack(side="right", anchor="e", padx=10)
+
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="THERMAL SOLVER",
+            text_color="black",
+            font=ctk.CTkFont(size=32)
+        )
+        title_label.pack(padx=10, pady=8, anchor="w")
+
+        subtitle_label = ctk.CTkLabel(
+            header_frame,
+            text="HEAT PIPE",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
+        subtitle_label.pack(padx=10, anchor="w")
 
 if __name__ == "__main__":
     ctk.set_appearance_mode("Light")
