@@ -61,12 +61,13 @@ class ThermalSolver(ctk.CTk):
         # Create each page and add it to the dictionary
         for F in (MenuFrame, PipingFrame, BoilCondFrame, DoublePipeFrame, PlateFrameFrame, ShellTubeFrame,
                   HeatPipeFrame, SettingsFrame):
-            frame = F(container, self)  # Pass the container and this controller class
-            self.frames[F] = frame
+            page_name = F.__name__
+            frame = F(container, self)
+            self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
         # Start by showing the main menu
-        self.show_frame(MenuFrame)
+        self.show_frame("MenuFrame")
 
     # Function to load and process images
     def load_image(self, name, size):
@@ -75,8 +76,8 @@ class ThermalSolver(ctk.CTk):
         return ctk.CTkImage(light_image=image, size=size)
 
     # Function to bring a frame to the front
-    def show_frame(self, container):
-        frame = self.frames[container]
+    def show_frame(self, page_name):
+        frame = self.frames[page_name]
         frame.tkraise()
 
 if __name__ == "__main__":

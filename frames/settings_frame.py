@@ -16,14 +16,14 @@ class SettingsFrame(BaseFrame):
 
         version_label = ctk.CTkLabel(
             self.content_frame,
-            text="Thermal Solver v0.1.0 beta",
+            text="Thermal Solver v0.1.0 alpha",
             text_color="black",
             font=ctk.CTkFont(size=14)
         )
         version_label.pack(side="bottom")
         calculator_label = ctk.CTkLabel(
             self.content_frame,
-            text="Calculation Settings",
+            text="CALCULATION SETTINGS",
             text_color="black",
             font=ctk.CTkFont(size=18, weight="bold")
         )

@@ -1,10 +1,8 @@
-# Hi
-
 import numpy as np
 
 def WaterInterp(temp_w):
     ## Set up properties table to pull from
-    variables = ["Tsat", "Psat", "vf", "vg", "uf", "ug", "hf", "hfg", "hg", "sf", "sg", "gamma", "rho", "mu", "nu", "sigma", "E", "Pr", "alpha", "k", "cp"];
+    variables = ["Tsat", "Psat", "vf", "vg", "uf", "ug", "hf", "hfg", "hg", "sf", "sg", "gamma", "rho", "mu", "nu", "sigma", "E", "Pr", "alpha", "k", "cp"]
     
     w_table = np.array([[0.,     0.611,  0.0010002, 206.136, 0.00,   2375.3, 0.01,   2501.3, 2501.4, 0.0000, 9.1562, 9.805, 999.8, 1.78E-03, 1.79E-06, 0.0765, 1.98E+09, 12.99, 1.35E-07, 0.569, 4.22E+00],
                         [5.,     0.872,  0.0010001, 147.120, 20.97,  2382.3, 20.98,  2489.6, 2510.6, 0.0761, 9.0257, 9.807, 1000,  1.52E-03, 1.52E-06, 0.0749, 2.05E+09, 10.98, 1.38E-07, 0.579, 4.20E+00],
@@ -22,74 +20,74 @@ def WaterInterp(temp_w):
                         [100.,   101.40, 0.0010435, 1.673,   418.94, 2506.5, 419.04, 2257.0, 2676.1, 1.3069, 7.3549, 9.399, 958.4, 2.82E-04, 2.94E-07, 0.0589, 2.07E+09, 1.76,  1.68E-07, 0.68,  4.22E+00]])
     
     ## Find high end
-    i = 0;
+    i = 0
     
     while (w_table[i,0] <= temp_w):
     
-        i = i + 1;
+        i = i + 1
     
-    high_index = i;
+    high_index = i
     ## Low end
-    low_index = i - 1;
+    low_index = i - 1
     
-    percent_high = (temp_w - w_table[low_index, 0])/ (w_table[high_index, 0] - w_table[low_index, 0]);
-    percent_low = 1 - percent_high;
+    percent_high = (temp_w - w_table[low_index, 0])/ (w_table[high_index, 0] - w_table[low_index, 0])
+    percent_low = 1 - percent_high
     
     ## Take values from tables
     
-    list_low = w_table[low_index, :];
-    list_high = w_table[high_index,:];
+    list_low = w_table[low_index, :]
+    list_high = w_table[high_index,:]
     
     ## Interpolate each variable
     
     list_interpolated = np.empty((1,len(list_low)), dtype = float)
-    list_interpolated[:] = list_low[:]*percent_low + list_high[:]*percent_high;
+    list_interpolated[:] = list_low[:]*percent_low + list_high[:]*percent_high
     
     ## Assign Variable Names
 
-    j = 0;
+    j = 0
     
-    Tsat = list_interpolated[j];
-    j = j + 1;
-    Psat= list_interpolated[j];
-    j = j + 1;
-    vf= list_interpolated[j];
-    j = j + 1;
-    vg= list_interpolated[j];
-    j = j + 1;
-    uf= list_interpolated[j];
-    j = j + 1;
-    ug= list_interpolated[j];
-    j = j + 1;
-    hf= list_interpolated[j];
-    j = j + 1;
-    hfg= list_interpolated[j];
-    j = j + 1;
-    hg= list_interpolated[j];
-    j = j + 1;
-    sf= list_interpolated[j];
-    j = j + 1;
-    sg= list_interpolated[j];
-    j = j + 1;
-    gamma= list_interpolated[j];
-    j = j + 1;
-    rho= list_interpolated[j];
-    j = j + 1;
-    mu= list_interpolated[j];
-    j = j + 1;
-    nu= list_interpolated[j];
-    j = j + 1;
-    sigma= list_interpolated[j];
-    j = j + 1;
-    E= list_interpolated[j];
-    j = j + 1;
-    Pr= list_interpolated[j];
-    j = j + 1;
-    alpha= list_interpolated[j];
-    j = j + 1;
-    k= list_interpolated[j];
-    j = j + 1;
-    Cp= list_interpolated[j];
-    j = j + 1;
+    Tsat = list_interpolated[j]
+    j = j + 1
+    Psat= list_interpolated[j]
+    j = j + 1
+    vf= list_interpolated[j]
+    j = j + 1
+    vg= list_interpolated[j]
+    j = j + 1
+    uf= list_interpolated[j]
+    j = j + 1
+    ug= list_interpolated[j]
+    j = j + 1
+    hf= list_interpolated[j]
+    j = j + 1
+    hfg= list_interpolated[j]
+    j = j + 1
+    hg= list_interpolated[j]
+    j = j + 1
+    sf= list_interpolated[j]
+    j = j + 1
+    sg= list_interpolated[j]
+    j = j + 1
+    gamma= list_interpolated[j]
+    j = j + 1
+    rho= list_interpolated[j]
+    j = j + 1
+    mu= list_interpolated[j]
+    j = j + 1
+    nu= list_interpolated[j]
+    j = j + 1
+    sigma= list_interpolated[j]
+    j = j + 1
+    E= list_interpolated[j]
+    j = j + 1
+    Pr= list_interpolated[j]
+    j = j + 1
+    alpha= list_interpolated[j]
+    j = j + 1
+    k= list_interpolated[j]
+    j = j + 1
+    Cp= list_interpolated[j]
+    j = j + 1
 
     return ((list_interpolated))

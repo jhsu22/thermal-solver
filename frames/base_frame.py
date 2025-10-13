@@ -28,7 +28,7 @@ class BaseFrame(ctk.CTkFrame):
             hover_color="#5480BA",
             height=45,
             width=150,
-            command=lambda: controller.show_frame(MenuFrame)
+            command=lambda: controller.show_frame("MenuFrame")
         )
         back_button.pack(side="right", anchor="e", padx=10)
 
