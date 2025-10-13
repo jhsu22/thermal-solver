@@ -16,7 +16,7 @@ class SettingsFrame(BaseFrame):
 
         version_label = ctk.CTkLabel(
             self.content_frame,
-            text="Thermal Solver v0.1.0 alpha",
+            text="Thermal Solver v0.1.6 alpha",
             text_color="black",
             font=ctk.CTkFont(size=14)
         )

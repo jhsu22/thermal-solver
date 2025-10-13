@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from frames import BaseFrame
+from solvers.dphx_solver import calculate_dphx
 
 class DoublePipeFrame(BaseFrame):
     def __init__(self, parent, controller):
@@ -25,18 +26,20 @@ class DoublePipeFrame(BaseFrame):
         # Row 1: Length
         length_label = ctk.CTkLabel(input_frame, text="Length", text_color="black", font=ctk.CTkFont(size=16))
         length_label.grid(row=1, column=0, sticky="w", padx=5, pady=5)
-        length_entry = ctk.CTkEntry(
+
+        self.length_entry = ctk.CTkEntry(
             input_frame,
             placeholder_text="m",
             placeholder_text_color="#4F4F4F",
             text_color="black"
         )
-        length_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=7) # "ew" = expand east-west
+        self.length_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=7) # "ew" = expand east-west
 
         # Row 2: Material
         material_label = ctk.CTkLabel(input_frame, text="Material", text_color="black", font=ctk.CTkFont(size=16))
         material_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
-        material_selection = ctk.CTkOptionMenu(
+
+        self.material_selection = ctk.CTkOptionMenu(
             input_frame,
             values=["Copper (Type K)", "Copper (Type M)", "Copper (Type L)", "Steel"],
             text_color="black",
@@ -46,17 +49,18 @@ class DoublePipeFrame(BaseFrame):
             dropdown_text_color="black",
             width=250
         )
-        material_selection.grid(row=2, column=1, sticky="w", padx=5, pady=7) # "w" = align west
+        self.material_selection.grid(row=2, column=1, sticky="w", padx=5, pady=7) # "w" = align west
 
         # Row 3: Nominal Diameter
         nominal_label = ctk.CTkLabel(input_frame, text="Nominal Diameter", text_color="black", font=ctk.CTkFont(size=16))
         nominal_label.grid(row=3, column=0, sticky="w", padx=5, pady=7)
-        nominal_input = ctk.CTkEntry(
+
+        self.nominal_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="Enter as decimal",
             placeholder_text_color="#4F4F4F",
         )
-        nominal_input.grid(row=3, column=1, sticky="ew", padx=5, pady=7)
+        self.nominal_input.grid(row=3, column=1, sticky="ew", padx=5, pady=7)
 
         # Section Title: Fluid Settings
         fluid_label = ctk.CTkLabel(
@@ -76,7 +80,7 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid1_label.grid(row=5, column=0, sticky="w", padx=5, pady=7)
 
-        fluid1_input = ctk.CTkOptionMenu(
+        self.fluid1_input = ctk.CTkOptionMenu(
             input_frame,
             values=["Water", "Hexane", "Ethylene Glycol", "Benzene", "Oil"],
             text_color="black",
@@ -86,7 +90,7 @@ class DoublePipeFrame(BaseFrame):
             dropdown_text_color="black",
             width=250
         )
-        fluid1_input.grid(row=5, column=1, sticky="w", padx=10, pady=7)
+        self.fluid1_input.grid(row=5, column=1, sticky="w", padx=10, pady=7)
 
         # Fluid 1 Inlet Temp
         fluid1_inlet_label = ctk.CTkLabel(
@@ -97,12 +101,12 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid1_inlet_label.grid(row=6, column=0, sticky="w", padx=10, pady=7)
 
-        fluid1_inlet_input = ctk.CTkEntry(
+        self.fluid1_inlet_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="deg C",
             placeholder_text_color="#4F4F4F",
         )
-        fluid1_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
+        self.fluid1_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
 
         # Fluid 1 Outlet Temp
         fluid1_outlet_label = ctk.CTkLabel(
@@ -113,12 +117,12 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid1_outlet_label.grid(row=7, column=0, sticky="w", padx=10, pady=7)
 
-        fluid1_outlet_input = ctk.CTkEntry(
+        self.fluid1_outlet_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="deg C",
             placeholder_text_color="#4F4F4F",
         )
-        fluid1_outlet_input.grid(row=7, column=1, sticky="ew", padx=10, pady=7)
+        self.fluid1_outlet_input.grid(row=7, column=1, sticky="ew", padx=10, pady=7)
 
         # Fluid 1 Mass Flow Rate
         fluid1_mfr_label = ctk.CTkLabel(
@@ -129,12 +133,12 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid1_mfr_label.grid(row=8, column=0, sticky="w", padx=10, pady=7)
 
-        fluid1_mfr_input = ctk.CTkEntry(
+        self.fluid1_mfr_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="kg/s",
             placeholder_text_color="#4F4F4F",
         )
-        fluid1_mfr_input.grid(row=8, column=1, sticky="ew", padx=10, pady=7)
+        self.fluid1_mfr_input.grid(row=8, column=1, sticky="ew", padx=10, pady=7)
 
         # Fluid 2
         fluid2_label = ctk.CTkLabel(
@@ -145,7 +149,7 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid2_label.grid(row=5, column=2, sticky="w", padx=5, pady=7)
 
-        fluid2_input = ctk.CTkOptionMenu(
+        self.fluid2_input = ctk.CTkOptionMenu(
             input_frame,
             values=["Water", "Hexane", "Ethylene Glycol", "Benzene", "Oil"],
             text_color="black",
@@ -155,7 +159,7 @@ class DoublePipeFrame(BaseFrame):
             dropdown_text_color="black",
             width=250
         )
-        fluid2_input.grid(row=5, column=3, sticky="w", padx=10, pady=7)
+        self.fluid2_input.grid(row=5, column=3, sticky="w", padx=10, pady=7)
 
         # Fluid 2 Inlet Temp
         fluid2_inlet_label = ctk.CTkLabel(
@@ -166,12 +170,12 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid2_inlet_label.grid(row=6, column=2, sticky="w", padx=10, pady=7)
 
-        fluid2_inlet_input = ctk.CTkEntry(
+        self.fluid2_inlet_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="deg C",
             placeholder_text_color="#4F4F4F",
         )
-        fluid2_inlet_input.grid(row=6, column=3, sticky="ew", padx=10, pady=7)
+        self.fluid2_inlet_input.grid(row=6, column=3, sticky="ew", padx=10, pady=7)
 
         # Fluid 2 Outlet Temp
         fluid2_outlet_label = ctk.CTkLabel(
@@ -182,12 +186,12 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid2_outlet_label.grid(row=7, column=2, sticky="w", padx=10, pady=7)
 
-        fluid2_outlet_input = ctk.CTkEntry(
+        self.fluid2_outlet_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="deg C",
             placeholder_text_color="#4F4F4F",
         )
-        fluid2_outlet_input.grid(row=7, column=3, sticky="ew", padx=10, pady=7)
+        self.fluid2_outlet_input.grid(row=7, column=3, sticky="ew", padx=10, pady=7)
 
         # Fluid 2 Mass Flow Rate
         fluid2_mfr_label = ctk.CTkLabel(
@@ -198,12 +202,12 @@ class DoublePipeFrame(BaseFrame):
         )
         fluid2_mfr_label.grid(row=8, column=2, sticky="w", padx=10, pady=7)
 
-        fluid2_mfr_input = ctk.CTkEntry(
+        self.fluid2_mfr_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="kg/s",
             placeholder_text_color="#4F4F4F",
         )
-        fluid2_mfr_input.grid(row=8, column=3, sticky="ew", padx=10, pady=7)
+        self.fluid2_mfr_input.grid(row=8, column=3, sticky="ew", padx=10, pady=7)
 
         # Calculate button
         calculate_button = ctk.CTkButton(
@@ -215,6 +219,34 @@ class DoublePipeFrame(BaseFrame):
             hover_color="#5480BA",
             height=45,
             width=150,
-            command=''
+            command=self.calculate
         )
         calculate_button.grid(row=9, column=0, columnspan=4, pady=50)
+
+    def calculate(self):
+        try:
+            # Take all input parameters from gui elements
+            length = self.length_entry.get()
+            material = self.material_selection.get()
+            nominal_dia = self.nominal_input.get()
+            fluid1 = self.fluid1_input.get()
+            fluid1_inlet_temp = self.fluid1_inlet_input.get()
+            fluid1_outlet_temp = self.fluid1_outlet_input.get()
+            fluid1_mass_flow = self.fluid1_mfr_input.get()
+            fluid2 = self.fluid2_input.get()
+            fluid2_inlet_temp = self.fluid2_inlet_input.get()
+            fluid2_outlet_temp = self.fluid2_outlet_input.get()
+            fluid2_mass_flow = self.fluid2_mfr_input.get()
+
+            # Pass inputs to calculator to get results
+            calculation_results = calculate_dphx(
+                length=length, material=material, nominal_dia=nominal_dia,
+                fluid1=fluid1, fluid1_inlet_temp=fluid1_inlet_temp, fluid1_outlet_temp=fluid1_outlet_temp, fluid1_mass_flow=fluid1_mass_flow,
+                fluid2=fluid2, fluid2_inlet_temp=fluid2_inlet_temp, fluid2_outlet_temp=fluid2_outlet_temp, fluid2_mass_flow=fluid2_mass_flow
+            )
+
+        except ValueError:
+            self.results_label.configure(text = "Please enter valid inputs in all fields")
+
+        except Exception as e:
+            self.results_label.configure(text = f"An error occurred: {e}")
