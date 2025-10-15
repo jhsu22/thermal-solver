@@ -7,7 +7,7 @@ A Python-based thermal systems solver!
 Created as a project for Cal Poly Pomona's ME 4990 course
 """
 
-from tkextrafont import Font
+#from tkextrafont import Font
 from pathlib import Path
 import customtkinter as ctk
 from PIL import Image
@@ -31,7 +31,7 @@ class ThermalSolver(ctk.CTk):
         self.IMAGE_PATH = self.BASE_PATH / "assets" / "images"
 
         # Load custom font
-        Font(file=self.FONT_PATH, family="Pixelify Sans", size=12)
+        #Font(file=self.FONT_PATH, family="Pixelify Sans", size=12)
 
         # Load all images into dictionary
         self.images = {
