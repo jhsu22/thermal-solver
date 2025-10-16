@@ -95,7 +95,7 @@ class DoublePipeFrame(BaseFrame):
         # Fluid 1 Inlet Temp
         fluid1_inlet_label = ctk.CTkLabel(
             input_frame,
-            text="INLET TEMP",
+            text="Inlet Temp",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -103,7 +103,7 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid1_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="deg C",
+            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid1_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
@@ -111,7 +111,7 @@ class DoublePipeFrame(BaseFrame):
         # Fluid 1 Outlet Temp
         fluid1_outlet_label = ctk.CTkLabel(
             input_frame,
-            text="OUTLET TEMP",
+            text="Outlet Temp",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -119,7 +119,7 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid1_outlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="deg C",
+            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid1_outlet_input.grid(row=7, column=1, sticky="ew", padx=10, pady=7)
@@ -127,7 +127,7 @@ class DoublePipeFrame(BaseFrame):
         # Fluid 1 Mass Flow Rate
         fluid1_mfr_label = ctk.CTkLabel(
             input_frame,
-            text="MASS FLOW RATE",
+            text="Mass Flow Rate",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -164,7 +164,7 @@ class DoublePipeFrame(BaseFrame):
         # Fluid 2 Inlet Temp
         fluid2_inlet_label = ctk.CTkLabel(
             input_frame,
-            text="INLET TEMP",
+            text="Inlet Temp",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -172,7 +172,7 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid2_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="deg C",
+            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid2_inlet_input.grid(row=6, column=3, sticky="ew", padx=10, pady=7)
@@ -180,7 +180,7 @@ class DoublePipeFrame(BaseFrame):
         # Fluid 2 Outlet Temp
         fluid2_outlet_label = ctk.CTkLabel(
             input_frame,
-            text="OUTLET TEMP",
+            text="Outlet Temp",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -188,7 +188,7 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid2_outlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="deg C",
+            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid2_outlet_input.grid(row=7, column=3, sticky="ew", padx=10, pady=7)
@@ -196,7 +196,7 @@ class DoublePipeFrame(BaseFrame):
         # Fluid 2 Mass Flow Rate
         fluid2_mfr_label = ctk.CTkLabel(
             input_frame,
-            text="MASS FLOW RATE",
+            text="Mass Flow Rate",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )

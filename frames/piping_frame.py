@@ -2,6 +2,7 @@ import customtkinter as ctk
 from frames import BaseFrame
 from solvers.piping_solver import calculate_piping
 
+
 class PipingFrame(BaseFrame):
     def __init__(self, parent, controller):
         super().__init__(parent, controller, "PIPING")
@@ -11,18 +12,18 @@ class PipingFrame(BaseFrame):
         input_frame = ctk.CTkFrame(self.content_frame, fg_color="transparent")
         input_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-        # Configure the grid columns. Column 1 will expand to fill space.
-        input_frame.grid_columnconfigure(1, weight=1)
+        # Configure the grid columns.
+        input_frame.grid_columnconfigure((0, 1, 2, 3), weight=1, uniform="group1")
 
-        # Section Title: Exchanger Settings
+        # Section Title: Piping Settings
         exchanger_label = ctk.CTkLabel(
             input_frame,
             text="PIPING SETTINGS",
             text_color="black",
             font=ctk.CTkFont(size=18, weight="bold")
         )
-        # Span across 2 columns and add padding below it
-        exchanger_label.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 10))
+        # Span across 4 columns and add padding below it
+        exchanger_label.grid(row=0, column=0, columnspan=4, sticky="w", pady=(0, 10))
 
         # Row 1: Length
         length_label = ctk.CTkLabel(input_frame, text="Length", text_color="black", font=ctk.CTkFont(size=16))
@@ -33,7 +34,7 @@ class PipingFrame(BaseFrame):
             placeholder_text_color="#4F4F4F",
             text_color="black"
         )
-        self.length_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=5)  # "ew" = expand east-west
+        self.length_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
 
         # Row 2: Material
         material_label = ctk.CTkLabel(input_frame, text="Material", text_color="black", font=ctk.CTkFont(size=16))
@@ -47,7 +48,7 @@ class PipingFrame(BaseFrame):
             dropdown_hover_color="#999999",
             dropdown_text_color="black"
         )
-        self.material_selection.grid(row=2, column=1, sticky="w", padx=5, pady=5)  # "w" = align west
+        self.material_selection.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
 
         # Row 3: Nominal Diameter
         nominal_label = ctk.CTkLabel(input_frame, text="Nominal Diameter", text_color="black",
@@ -67,7 +68,7 @@ class PipingFrame(BaseFrame):
             text_color="black",
             font=ctk.CTkFont(size=18, weight="bold")
         )
-        fluid_label.grid(row=4, column=0, columnspan=2, sticky="w", pady=(20, 10))
+        fluid_label.grid(row=4, column=0, columnspan=4, sticky="w", pady=(20, 10))
 
         # Fluid
         fluid_label = ctk.CTkLabel(
@@ -85,15 +86,13 @@ class PipingFrame(BaseFrame):
             font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd",
             dropdown_hover_color="#999999",
-            dropdown_text_color="black",
-            width=250
-        )
-        self.fluid_input.grid(row=5, column=1, sticky="w", padx=10, pady=7)
+            dropdown_text_color="black")
+        self.fluid_input.grid(row=5, column=1, sticky="ew", padx=10, pady=7)
 
         # Fluid Inlet Temp
         fluid_inlet_label = ctk.CTkLabel(
             input_frame,
-            text="INLET TEMP",
+            text="Inlet Temp",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -101,7 +100,7 @@ class PipingFrame(BaseFrame):
 
         self.fluid_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="deg C",
+            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
@@ -109,18 +108,18 @@ class PipingFrame(BaseFrame):
         # Fluid Mass Flow Rate
         fluid_mfr_label = ctk.CTkLabel(
             input_frame,
-            text="MASS FLOW RATE",
+            text="Mass Flow Rate",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
-        fluid_mfr_label.grid(row=8, column=0, sticky="w", padx=10, pady=7)
+        fluid_mfr_label.grid(row=7, column=0, sticky="w", padx=10, pady=7)
 
         self.fluid_mfr_input = ctk.CTkEntry(
             input_frame,
             placeholder_text="kg/s",
             placeholder_text_color="#4F4F4F",
         )
-        self.fluid_mfr_input.grid(row=8, column=1, sticky="ew", padx=10, pady=7)
+        self.fluid_mfr_input.grid(row=7, column=1, sticky="ew", padx=10, pady=7)
 
         # Calculate button
         calculate_button = ctk.CTkButton(
@@ -134,7 +133,7 @@ class PipingFrame(BaseFrame):
             width=150,
             command=self.calculate
         )
-        calculate_button.grid(row=9, column=0, columnspan=4, pady=50)
+        calculate_button.grid(row=8, column=0, columnspan=4, pady=50)
 
         # Results Label
         self.results_label = ctk.CTkLabel(
@@ -143,7 +142,7 @@ class PipingFrame(BaseFrame):
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
-        self.results_label.grid(row=10, column=0, columnspan=4)
+        self.results_label.grid(row=9, column=0, columnspan=4)
 
     def calculate(self):
         try:

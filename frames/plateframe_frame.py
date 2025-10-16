@@ -77,7 +77,7 @@ class PlateFrameFrame(BaseFrame):
         # Hot Fluid Inlet Temp
         hot_fluid_inlet_label = ctk.CTkLabel(
             input_frame,
-            text="INLET TEMP",
+            text="Inlet Temp",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -85,7 +85,7 @@ class PlateFrameFrame(BaseFrame):
 
         self.hot_fluid_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="deg C",
+            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.hot_fluid_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
@@ -93,7 +93,7 @@ class PlateFrameFrame(BaseFrame):
         # Hot Fluid Mass Flow Rate
         hot_fluid_mfr_label = ctk.CTkLabel(
             input_frame,
-            text="MASS FLOW RATE",
+            text="Mass Flow Rate",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -130,7 +130,7 @@ class PlateFrameFrame(BaseFrame):
         # Cold Fluid Inlet Temp
         cold_fluid_inlet_label = ctk.CTkLabel(
             input_frame,
-            text="INLET TEMP",
+            text="Inlet Temp",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )
@@ -138,7 +138,7 @@ class PlateFrameFrame(BaseFrame):
 
         self.cold_fluid_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="deg C",
+            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.cold_fluid_inlet_input.grid(row=6, column=3, sticky="ew", padx=10, pady=7)
@@ -146,7 +146,7 @@ class PlateFrameFrame(BaseFrame):
         # Cold Fluid Mass Flow Rate
         cold_fluid_mfr_label = ctk.CTkLabel(
             input_frame,
-            text="MASS FLOW RATE",
+            text="Mass Flow Rate",
             text_color="black",
             font=ctk.CTkFont(size=16)
         )

@@ -10,116 +10,138 @@ class HeatPipeFrame(BaseFrame):
         input_frame = ctk.CTkFrame(self.content_frame, fg_color="transparent")
         input_frame.pack(pady=10, padx=20, fill="both", expand=True)
 
-        input_frame.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        input_frame.grid_columnconfigure((0, 1, 2, 3), weight=1, uniform="group1")
 
-        # Section Title: Heat Pipe Settings
-        heatpipe_label = ctk.CTkLabel(
-            input_frame,
-            text="HEAT PIPE SETTINGS",
-            text_color="black",
-            font=ctk.CTkFont(size=18, weight="bold")
+        # --- Section: Heat Pipe Geometry ---
+        geometry_label = ctk.CTkLabel(
+            input_frame, text="HEAT PIPE GEOMETRY", text_color="black", font=ctk.CTkFont(size=18, weight="bold")
         )
-        heatpipe_label.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 10))
+        geometry_label.grid(row=0, column=0, columnspan=4, sticky="w", pady=(0, 10))
 
-        # Wick Material
-        wick_material_label = ctk.CTkLabel(input_frame, text="Wick Material", text_color="black",
-                                           font=ctk.CTkFont(size=16))
-        wick_material_label.grid(row=1, column=0, sticky="w", padx=5, pady=7)
+        evap_len_label = ctk.CTkLabel(input_frame, text="Evaporator Length", text_color="black",
+                                      font=ctk.CTkFont(size=16))
+        evap_len_label.grid(row=1, column=0, sticky="w", padx=5, pady=7)
+        self.evap_len_entry = ctk.CTkEntry(input_frame, placeholder_text="cm", placeholder_text_color="#4F4F4F")
+        self.evap_len_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=7)
 
+        adia_len_label = ctk.CTkLabel(input_frame, text="Adiabatic Length", text_color="black",
+                                      font=ctk.CTkFont(size=16))
+        adia_len_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
+        self.adia_len_entry = ctk.CTkEntry(input_frame, placeholder_text="cm", placeholder_text_color="#4F4F4F")
+        self.adia_len_entry.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
+
+        cond_len_label = ctk.CTkLabel(input_frame, text="Condenser Length", text_color="black",
+                                      font=ctk.CTkFont(size=16))
+        cond_len_label.grid(row=3, column=0, sticky="w", padx=5, pady=7)
+        self.cond_len_entry = ctk.CTkEntry(input_frame, placeholder_text="cm", placeholder_text_color="#4F4F4F")
+        self.cond_len_entry.grid(row=3, column=1, sticky="ew", padx=5, pady=7)
+
+        vapor_diam_label = ctk.CTkLabel(input_frame, text="Vapor Core Diameter", text_color="black",
+                                        font=ctk.CTkFont(size=16))
+        vapor_diam_label.grid(row=1, column=2, sticky="w", padx=15, pady=7)
+        self.vapor_diam_entry = ctk.CTkEntry(input_frame, placeholder_text="mm", placeholder_text_color="#4F4F4F")
+        self.vapor_diam_entry.grid(row=1, column=3, sticky="ew", padx=5, pady=7)
+
+        orientation_label = ctk.CTkLabel(input_frame, text="Orientation", text_color="black", font=ctk.CTkFont(size=16))
+        orientation_label.grid(row=2, column=2, sticky="w", padx=15, pady=7)
+        self.orientation_selection = ctk.CTkOptionMenu(
+            input_frame, values=["Horizontal", "Vertical"], text_color="black", font=ctk.CTkFont(size=14),
+            dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999", dropdown_text_color="black"
+        )
+        self.orientation_selection.grid(row=2, column=3, sticky="ew", padx=5, pady=7)
+
+        # --- Section: Wick Structure ---
+        wick_label = ctk.CTkLabel(
+            input_frame, text="WICK STRUCTURE", text_color="black", font=ctk.CTkFont(size=18, weight="bold")
+        )
+        wick_label.grid(row=4, column=0, columnspan=4, sticky="w", pady=(20, 10))
+
+        wick_mat_label = ctk.CTkLabel(input_frame, text="Wick Material", text_color="black", font=ctk.CTkFont(size=16))
+        wick_mat_label.grid(row=5, column=0, sticky="w", padx=5, pady=7)
         self.wick_material_selection = ctk.CTkOptionMenu(
-            input_frame,
-            values=["Copper", "Steel", "Sintered Nickel"],
-            text_color="black",
-            font=ctk.CTkFont(size=14),
-            dropdown_fg_color="#bfbdbd",
-            dropdown_hover_color="#999999",
-            dropdown_text_color="black",
-            width=250
+            input_frame, values=["Stainless Steel Screen", "Copper Screen", "Sintered Nickel"], text_color="black",
+            font=ctk.CTkFont(size=14), dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
+            dropdown_text_color="black"
         )
-        self.wick_material_selection.grid(row=1, column=1, sticky="w", padx=5, pady=7)
+        self.wick_material_selection.grid(row=5, column=1, sticky="ew", padx=5, pady=7)
 
-        # Working Fluid
+        mesh_label = ctk.CTkLabel(input_frame, text="Mesh Number", text_color="black", font=ctk.CTkFont(size=16))
+        mesh_label.grid(row=6, column=0, sticky="w", padx=5, pady=7)
+        self.mesh_entry = ctk.CTkEntry(input_frame, placeholder_text="#400", placeholder_text_color="#4F4F4F")
+        self.mesh_entry.grid(row=6, column=1, sticky="ew", padx=5, pady=7)
+
+        wire_diam_label = ctk.CTkLabel(input_frame, text="Wire Diameter", text_color="black", font=ctk.CTkFont(size=16))
+        wire_diam_label.grid(row=5, column=2, sticky="w", padx=15, pady=7)
+        self.wire_diam_entry = ctk.CTkEntry(input_frame, placeholder_text="in", placeholder_text_color="#4F4F4F")
+        self.wire_diam_entry.grid(row=5, column=3, sticky="ew", padx=5, pady=7)
+
+        layers_label = ctk.CTkLabel(input_frame, text="Number of Layers", text_color="black", font=ctk.CTkFont(size=16))
+        layers_label.grid(row=6, column=2, sticky="w", padx=15, pady=7)
+        self.layers_entry = ctk.CTkEntry(input_frame, placeholder_text="e.g., 3", placeholder_text_color="#4F4F4F")
+        self.layers_entry.grid(row=6, column=3, sticky="ew", padx=5, pady=7)
+
+        # --- Section: Operating Conditions ---
+        op_label = ctk.CTkLabel(
+            input_frame, text="OPERATING CONDITIONS", text_color="black", font=ctk.CTkFont(size=18, weight="bold")
+        )
+        op_label.grid(row=7, column=0, columnspan=4, sticky="w", pady=(20, 10))
+
         working_fluid_label = ctk.CTkLabel(input_frame, text="Working Fluid", text_color="black",
                                            font=ctk.CTkFont(size=16))
-        working_fluid_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
-
+        working_fluid_label.grid(row=8, column=0, sticky="w", padx=5, pady=7)
         self.working_fluid_input = ctk.CTkOptionMenu(
-            input_frame,
-            values=["Water", "Ammonia", "Methanol"],
-            text_color="black",
-            font=ctk.CTkFont(size=14),
-            dropdown_fg_color="#bfbdbd",
-            dropdown_hover_color="#999999",
-            dropdown_text_color="black",
-            width=250
+            input_frame, values=["Water", "Ammonia", "Methanol"], text_color="black", font=ctk.CTkFont(size=14),
+            dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999", dropdown_text_color="black"
         )
-        self.working_fluid_input.grid(row=2, column=1, sticky="w", padx=10, pady=7)
+        self.working_fluid_input.grid(row=8, column=1, sticky="ew", padx=5, pady=7)
 
-        # Heat Pipe Dimensions
-        dimensions_label = ctk.CTkLabel(input_frame, text="Dimensions (LxD)", text_color="black",
-                                        font=ctk.CTkFont(size=16))
-        dimensions_label.grid(row=3, column=0, sticky="w", padx=5, pady=7)
-
-        self.dimensions_input = ctk.CTkEntry(
-            input_frame,
-            placeholder_text="m x m",
-            placeholder_text_color="#4F4F4F",
-        )
-        self.dimensions_input.grid(row=3, column=1, sticky="ew", padx=5, pady=7)
-
-        # Operating Temperature
         op_temp_label = ctk.CTkLabel(input_frame, text="Operating Temperature", text_color="black",
                                      font=ctk.CTkFont(size=16))
-        op_temp_label.grid(row=4, column=0, sticky="w", padx=10, pady=7)
+        op_temp_label.grid(row=8, column=2, sticky="w", padx=15, pady=7)
+        self.op_temp_input = ctk.CTkEntry(input_frame, placeholder_text="°C", placeholder_text_color="#4F4F4F")
+        self.op_temp_input.grid(row=8, column=3, sticky="ew", padx=5, pady=7)
 
-        self.op_temp_input = ctk.CTkEntry(
-            input_frame,
-            placeholder_text="deg C",
-            placeholder_text_color="#4F4F4F",
-        )
-        self.op_temp_input.grid(row=4, column=1, sticky="ew", padx=10, pady=7)
-
-        # Calculate button
+        # --- Calculate Button and Results ---
         calculate_button = ctk.CTkButton(
-            input_frame,
-            text="Calculate!",
-            text_color="black",
-            font=ctk.CTkFont(size=16),
-            fg_color="#689CE0",
-            hover_color="#5480BA",
-            height=45,
-            width=150,
-            command=self.calculate
+            input_frame, text="Calculate!", text_color="black", font=ctk.CTkFont(size=16),
+            fg_color="#689CE0", hover_color="#5480BA", height=45, width=150, command=self.calculate
         )
-        calculate_button.grid(row=9, column=0, columnspan=4, pady=50)
+        calculate_button.grid(row=9, column=0, columnspan=4, pady=40)
 
-        # Results Label
-        self.results_label = ctk.CTkLabel(
-            input_frame,
-            text="",
-            text_color="black",
-            font=ctk.CTkFont(size=16)
-        )
+        self.results_label = ctk.CTkLabel(input_frame, text="", text_color="black", font=ctk.CTkFont(size=16),
+                                          justify="left")
         self.results_label.grid(row=10, column=0, columnspan=4)
 
     def calculate(self):
         try:
-            # Take all input parameters from gui elements
-            wick_material = self.wick_material_selection.get()
-            working_fluid = self.working_fluid_input.get()
-            dimensions = self.dimensions_input.get()
-            op_temp = self.op_temp_input.get()
+            # Gather all input values
+            inputs = {
+                "evap_len": self.evap_len_entry.get(),
+                "adia_len": self.adia_len_entry.get(),
+                "cond_len": self.cond_len_entry.get(),
+                "vapor_diam": self.vapor_diam_entry.get(),
+                "orientation": self.orientation_selection.get(),
+                "wick_material": self.wick_material_selection.get(),
+                "mesh": self.mesh_entry.get(),
+                "wire_diam": self.wire_diam_entry.get(),
+                "layers": self.layers_entry.get(),
+                "working_fluid": self.working_fluid_input.get(),
+                "op_temp": self.op_temp_input.get()
+            }
 
-            # Pass inputs to calculator to get results
-            calculation_results = calculate_heatpipe(
-                wick_material=wick_material, working_fluid=working_fluid,
-                dimensions=dimensions, op_temp=op_temp
+            # Pass inputs to calculator
+            calculation_results = calculate_heatpipe(**inputs)
+
+            # Format and display results
+            results_text = (
+                f"Capillary Limit: {calculation_results['capillary']}\n"
+                f"Sonic Limit: {calculation_results['sonic']}\n"
+                f"Entrainment Limit: {calculation_results['entrainment']}\n"
+                f"Boiling Limit: {calculation_results['boiling']}"
             )
-
-            self.results_label.configure(text=calculation_results)
+            self.results_label.configure(text=results_text)
 
         except ValueError:
-            self.results_label.configure(text="Please enter valid inputs in all fields")
-
+            self.results_label.configure(text="Please enter valid inputs in all fields.")
         except Exception as e:
             self.results_label.configure(text=f"An error occurred: {e}")
