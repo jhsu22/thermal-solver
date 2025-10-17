@@ -29,7 +29,6 @@ class DoublePipeFrame(BaseFrame):
 
         self.length_entry = ctk.CTkEntry(
             input_frame,
-            placeholder_text="m",
             placeholder_text_color="#4F4F4F",
             text_color="black"
         )
@@ -103,7 +102,6 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid1_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid1_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
@@ -119,7 +117,6 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid1_outlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid1_outlet_input.grid(row=7, column=1, sticky="ew", padx=10, pady=7)
@@ -135,7 +132,6 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid1_mfr_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="kg/s",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid1_mfr_input.grid(row=8, column=1, sticky="ew", padx=10, pady=7)
@@ -172,7 +168,6 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid2_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid2_inlet_input.grid(row=6, column=3, sticky="ew", padx=10, pady=7)
@@ -188,7 +183,6 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid2_outlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid2_outlet_input.grid(row=7, column=3, sticky="ew", padx=10, pady=7)
@@ -204,7 +198,6 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid2_mfr_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="kg/s",
             placeholder_text_color="#4F4F4F",
         )
         self.fluid2_mfr_input.grid(row=8, column=3, sticky="ew", padx=10, pady=7)
@@ -222,6 +215,25 @@ class DoublePipeFrame(BaseFrame):
             command=self.calculate
         )
         calculate_button.grid(row=9, column=0, columnspan=4, pady=50)
+        self.update_placeholders()
+
+    def update_placeholders(self):
+        if self.controller.unit_system == "SI":
+            self.length_entry.configure(placeholder_text="m")
+            self.fluid1_inlet_input.configure(placeholder_text="°C")
+            self.fluid1_outlet_input.configure(placeholder_text="°C")
+            self.fluid1_mfr_input.configure(placeholder_text="kg/s")
+            self.fluid2_inlet_input.configure(placeholder_text="°C")
+            self.fluid2_outlet_input.configure(placeholder_text="°C")
+            self.fluid2_mfr_input.configure(placeholder_text="kg/s")
+        else: # Imperial
+            self.length_entry.configure(placeholder_text="ft")
+            self.fluid1_inlet_input.configure(placeholder_text="°F")
+            self.fluid1_outlet_input.configure(placeholder_text="°F")
+            self.fluid1_mfr_input.configure(placeholder_text="lb/s")
+            self.fluid2_inlet_input.configure(placeholder_text="°F")
+            self.fluid2_outlet_input.configure(placeholder_text="°F")
+            self.fluid2_mfr_input.configure(placeholder_text="lb/s")
 
     def calculate(self):
         try:

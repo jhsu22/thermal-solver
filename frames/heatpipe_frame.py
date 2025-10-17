@@ -21,25 +21,25 @@ class HeatPipeFrame(BaseFrame):
         evap_len_label = ctk.CTkLabel(input_frame, text="Evaporator Length", text_color="black",
                                       font=ctk.CTkFont(size=16))
         evap_len_label.grid(row=1, column=0, sticky="w", padx=5, pady=7)
-        self.evap_len_entry = ctk.CTkEntry(input_frame, placeholder_text="cm", placeholder_text_color="#4F4F4F")
+        self.evap_len_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.evap_len_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=7)
 
         adia_len_label = ctk.CTkLabel(input_frame, text="Adiabatic Length", text_color="black",
                                       font=ctk.CTkFont(size=16))
         adia_len_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
-        self.adia_len_entry = ctk.CTkEntry(input_frame, placeholder_text="cm", placeholder_text_color="#4F4F4F")
+        self.adia_len_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.adia_len_entry.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
 
         cond_len_label = ctk.CTkLabel(input_frame, text="Condenser Length", text_color="black",
                                       font=ctk.CTkFont(size=16))
         cond_len_label.grid(row=3, column=0, sticky="w", padx=5, pady=7)
-        self.cond_len_entry = ctk.CTkEntry(input_frame, placeholder_text="cm", placeholder_text_color="#4F4F4F")
+        self.cond_len_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.cond_len_entry.grid(row=3, column=1, sticky="ew", padx=5, pady=7)
 
         vapor_diam_label = ctk.CTkLabel(input_frame, text="Vapor Core Diameter", text_color="black",
                                         font=ctk.CTkFont(size=16))
         vapor_diam_label.grid(row=1, column=2, sticky="w", padx=15, pady=7)
-        self.vapor_diam_entry = ctk.CTkEntry(input_frame, placeholder_text="mm", placeholder_text_color="#4F4F4F")
+        self.vapor_diam_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.vapor_diam_entry.grid(row=1, column=3, sticky="ew", padx=5, pady=7)
 
         orientation_label = ctk.CTkLabel(input_frame, text="Orientation", text_color="black", font=ctk.CTkFont(size=16))
@@ -72,7 +72,7 @@ class HeatPipeFrame(BaseFrame):
 
         wire_diam_label = ctk.CTkLabel(input_frame, text="Wire Diameter", text_color="black", font=ctk.CTkFont(size=16))
         wire_diam_label.grid(row=5, column=2, sticky="w", padx=15, pady=7)
-        self.wire_diam_entry = ctk.CTkEntry(input_frame, placeholder_text="in", placeholder_text_color="#4F4F4F")
+        self.wire_diam_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.wire_diam_entry.grid(row=5, column=3, sticky="ew", padx=5, pady=7)
 
         layers_label = ctk.CTkLabel(input_frame, text="Number of Layers", text_color="black", font=ctk.CTkFont(size=16))
@@ -98,7 +98,7 @@ class HeatPipeFrame(BaseFrame):
         op_temp_label = ctk.CTkLabel(input_frame, text="Operating Temperature", text_color="black",
                                      font=ctk.CTkFont(size=16))
         op_temp_label.grid(row=8, column=2, sticky="w", padx=15, pady=7)
-        self.op_temp_input = ctk.CTkEntry(input_frame, placeholder_text="°C", placeholder_text_color="#4F4F4F")
+        self.op_temp_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.op_temp_input.grid(row=8, column=3, sticky="ew", padx=5, pady=7)
 
         # --- Calculate Button and Results ---
@@ -111,6 +111,23 @@ class HeatPipeFrame(BaseFrame):
         self.results_label = ctk.CTkLabel(input_frame, text="", text_color="black", font=ctk.CTkFont(size=16),
                                           justify="left")
         self.results_label.grid(row=10, column=0, columnspan=4)
+        self.update_placeholders()
+
+    def update_placeholders(self):
+        if self.controller.unit_system == "SI":
+            self.evap_len_entry.configure(placeholder_text="cm")
+            self.adia_len_entry.configure(placeholder_text="cm")
+            self.cond_len_entry.configure(placeholder_text="cm")
+            self.vapor_diam_entry.configure(placeholder_text="mm")
+            self.wire_diam_entry.configure(placeholder_text="in")
+            self.op_temp_input.configure(placeholder_text="°C")
+        else: # Imperial
+            self.evap_len_entry.configure(placeholder_text="in")
+            self.adia_len_entry.configure(placeholder_text="in")
+            self.cond_len_entry.configure(placeholder_text="in")
+            self.vapor_diam_entry.configure(placeholder_text="in")
+            self.wire_diam_entry.configure(placeholder_text="in")
+            self.op_temp_input.configure(placeholder_text="°F")
 
     def calculate(self):
         try:

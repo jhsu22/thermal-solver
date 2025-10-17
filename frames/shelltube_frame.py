@@ -25,13 +25,13 @@ class ShellTubeFrame(BaseFrame):
         # Length
         length_label = ctk.CTkLabel(input_frame, text="Tube Length", text_color="black", font=ctk.CTkFont(size=16))
         length_label.grid(row=1, column=0, sticky="w", padx=5, pady=7)
-        self.length_entry = ctk.CTkEntry(input_frame, placeholder_text="m", placeholder_text_color="#4F4F4F")
+        self.length_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.length_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=7)
 
         # Tube OD
         tube_od_label = ctk.CTkLabel(input_frame, text="Tube OD", text_color="black", font=ctk.CTkFont(size=16))
         tube_od_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
-        self.tube_od_entry = ctk.CTkEntry(input_frame, placeholder_text="in", placeholder_text_color="#4F4F4F")
+        self.tube_od_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.tube_od_entry.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
 
         # Tube BWG
@@ -59,7 +59,7 @@ class ShellTubeFrame(BaseFrame):
         # Shell ID
         shell_id_label = ctk.CTkLabel(input_frame, text="Shell ID", text_color="black", font=ctk.CTkFont(size=16))
         shell_id_label.grid(row=1, column=2, sticky="w", padx=15, pady=7)
-        self.shell_id_entry = ctk.CTkEntry(input_frame, placeholder_text="mm", placeholder_text_color="#4F4F4F")
+        self.shell_id_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.shell_id_entry.grid(row=1, column=3, sticky="ew", padx=5, pady=7)
 
         # Tube Arrangement
@@ -77,7 +77,7 @@ class ShellTubeFrame(BaseFrame):
         # Tube Pitch
         tube_pitch_label = ctk.CTkLabel(input_frame, text="Tube Pitch", text_color="black", font=ctk.CTkFont(size=16))
         tube_pitch_label.grid(row=3, column=2, sticky="w", padx=15, pady=7)
-        self.tube_pitch_entry = ctk.CTkEntry(input_frame, placeholder_text="mm", placeholder_text_color="#4F4F4F")
+        self.tube_pitch_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.tube_pitch_entry.grid(row=3, column=3, sticky="ew", padx=5, pady=7)
 
         # Number of Baffles
@@ -118,26 +118,24 @@ class ShellTubeFrame(BaseFrame):
         # Inlet Temp
         shell_inlet_label = ctk.CTkLabel(input_frame, text="Inlet Temp", text_color="black", font=ctk.CTkFont(size=16))
         shell_inlet_label.grid(row=8, column=0, sticky="w", padx=5, pady=7)
-        self.shell_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text="°C",
-                                                    placeholder_text_color="#4F4F4F")
+        self.shell_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.shell_fluid_inlet_input.grid(row=8, column=1, sticky="ew", padx=5, pady=7)
 
         tube_inlet_label = ctk.CTkLabel(input_frame, text="Inlet Temp", text_color="black", font=ctk.CTkFont(size=16))
         tube_inlet_label.grid(row=8, column=2, sticky="w", padx=15, pady=7)
-        self.tube_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text="°C", placeholder_text_color="#4F4F4F")
+        self.tube_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.tube_fluid_inlet_input.grid(row=8, column=3, sticky="ew", padx=5, pady=7)
 
         # Mass Flow Rate
         shell_mfr_label = ctk.CTkLabel(input_frame, text="Mass Flow Rate", text_color="black",
                                        font=ctk.CTkFont(size=16))
         shell_mfr_label.grid(row=9, column=0, sticky="w", padx=5, pady=7)
-        self.shell_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text="kg/s",
-                                                  placeholder_text_color="#4F4F4F")
+        self.shell_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.shell_fluid_mfr_input.grid(row=9, column=1, sticky="ew", padx=5, pady=7)
 
         tube_mfr_label = ctk.CTkLabel(input_frame, text="Mass Flow Rate", text_color="black", font=ctk.CTkFont(size=16))
         tube_mfr_label.grid(row=9, column=2, sticky="w", padx=15, pady=7)
-        self.tube_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text="kg/s", placeholder_text_color="#4F4F4F")
+        self.tube_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.tube_fluid_mfr_input.grid(row=9, column=3, sticky="ew", padx=5, pady=7)
 
         # Calculate button
@@ -150,6 +148,27 @@ class ShellTubeFrame(BaseFrame):
         # Results Label
         self.results_label = ctk.CTkLabel(input_frame, text="", text_color="black", font=ctk.CTkFont(size=16))
         self.results_label.grid(row=12, column=0, columnspan=4)
+        self.update_placeholders()
+
+    def update_placeholders(self):
+        if self.controller.unit_system == "SI":
+            self.length_entry.configure(placeholder_text="m")
+            self.tube_od_entry.configure(placeholder_text="in")
+            self.shell_id_entry.configure(placeholder_text="mm")
+            self.tube_pitch_entry.configure(placeholder_text="mm")
+            self.shell_fluid_inlet_input.configure(placeholder_text="°C")
+            self.tube_fluid_inlet_input.configure(placeholder_text="°C")
+            self.shell_fluid_mfr_input.configure(placeholder_text="kg/s")
+            self.tube_fluid_mfr_input.configure(placeholder_text="kg/s")
+        else: # Imperial
+            self.length_entry.configure(placeholder_text="ft")
+            self.tube_od_entry.configure(placeholder_text="in")
+            self.shell_id_entry.configure(placeholder_text="in")
+            self.tube_pitch_entry.configure(placeholder_text="in")
+            self.shell_fluid_inlet_input.configure(placeholder_text="°F")
+            self.tube_fluid_inlet_input.configure(placeholder_text="°F")
+            self.shell_fluid_mfr_input.configure(placeholder_text="lb/s")
+            self.tube_fluid_mfr_input.configure(placeholder_text="lb/s")
 
     def calculate(self):
         try:

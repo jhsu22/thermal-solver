@@ -54,6 +54,10 @@ class BoilCondFrame(BaseFrame):
         # Initialize with the first problem's inputs
         self.show_inputs_for_problem(self.problem_type_selection.get())
 
+    def update_placeholders(self):
+        # This will now just re-trigger the input creation
+        self.show_inputs_for_problem(self.problem_type_selection.get(), force_update=True)
+
     def create_input_field(self, parent, label_text, placeholder, row, col):
         """Helper function to create a label and an entry widget."""
         # col determines if it's the left (0) or right (1) pair of columns
@@ -66,9 +70,9 @@ class BoilCondFrame(BaseFrame):
         entry.grid(row=row, column=entry_col, sticky="ew", padx=5, pady=7)
         return label, entry
 
-    def show_inputs_for_problem(self, problem_name):
+    def show_inputs_for_problem(self, problem_name, force_update=False):
         """Clears and shows the correct input widgets for the selected problem."""
-        if self.current_problem == problem_name:
+        if self.current_problem == problem_name and not force_update:
             return  # No change needed
         self.current_problem = problem_name
 
@@ -77,8 +81,8 @@ class BoilCondFrame(BaseFrame):
             widget.destroy()
         self.input_widgets.clear()
 
-        # Define inputs for each problem type: (label, placeholder, row, column_pair)
-        problem_inputs = {
+        # Define inputs for each problem type: (label, {si_placeholder, imperial_placeholder}, row, column_pair)
+        si_placeholders = {
             "Vertical Plate (L & W)": [
                 ("Surface Temp", "°C", 0, 0), ("Saturated Temp", "°C", 1, 0),
                 ("Length", "m", 0, 1), ("Width", "m", 1, 1),
@@ -102,8 +106,34 @@ class BoilCondFrame(BaseFrame):
                 ("Pressure", "atm", 0, 1)
             ]
         }
+        imperial_placeholders = {
+            "Vertical Plate (L & W)": [
+                ("Surface Temp", "°F", 0, 0), ("Saturated Temp", "°F", 1, 0),
+                ("Length", "ft", 0, 1), ("Width", "ft", 1, 1),
+                ("Latent Heat", "Btu/lbm", 2, 0)
+            ],
+            "Vertical Plate (H)": [
+                ("Surface Temp", "°F", 0, 0), ("Height", "ft", 1, 0),
+                ("Pressure", "psi", 0, 1)
+            ],
+            "Horizontal Tube (OD)": [
+                ("Surface Temp", "°F", 0, 0), ("Outer Diameter", "ft", 1, 0),
+                ("Pressure", "psi", 0, 1)
+            ],
+            "Horizontal Tube (OD & ID)": [
+                ("Mean Water Temp", "°F", 0, 0), ("Outer Diameter", "ft", 1, 0),
+                ("Inner Diameter", "ft", 2, 0), ("Outside Convection Coeff", "Btu/hr·ft²·°F", 0, 1),
+                ("Inside Convection Coeff", "Btu/hr·ft²·°F", 1, 1), ("Pressure", "psi", 2, 1)
+            ],
+            "Circular Heating Element": [
+                ("Surface Temp", "°F", 0, 0), ("Diameter", "ft", 1, 0),
+                ("Pressure", "atm", 0, 1)
+            ]
+        }
+
 
         # Create and store widgets for the selected problem
+        problem_inputs = imperial_placeholders if self.controller.unit_system == "Imperial" else si_placeholders
         inputs = problem_inputs.get(problem_name, [])
         for label_text, placeholder, row, col_pair in inputs:
             label, entry = self.create_input_field(self.dynamic_frame, label_text, placeholder, row, col_pair)

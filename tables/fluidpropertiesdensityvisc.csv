@@ -1,0 +1,12 @@
+﻿Substance,Density (kg/m³),Dynamic Viscosity (Pa·s),Kinematic Viscosity (m²/s),Density (lb/ft³),Dynamic Viscosity (lb·s/ft²),Kinematic Viscosity (ft²/s)
+Water,998,0.001,1.00E-06,62.30,2.09E-05,1.08E-05
+Ethyl Alcohol,799,0.0012,1.50E-06,49.88,2.51E-05,1.61E-05
+Carbon Tetrachloride,1590,0.00096,6.00E-07,99.26,2.00E-05,6.46E-06
+Glycerine,1260,1.41,0.00112,78.66,0.0294,0.0121
+Kerosene,814,0.0019,2.37E-06,50.81,3.97E-05,2.55E-05
+Mercury,13550,0.0015,1.20E-07,845.89,3.13E-05,1.29E-06
+SAE 10W,870,0.036,4.10E-05,54.31,0.00075,0.00044
+SAW 10W-30,880,0.067,7.60E-05,54.94,0.00140,0.00082
+SAE 30,880,0.1,0.00011,54.94,0.00209,0.00118
+Hexane,660.6,0.00031,4.80E-07,41.24,6.47E-06,5.17E-06
+Ethylene Glycol,1090,0.0184,1.78E-05,68.04,0.00038,0.00019

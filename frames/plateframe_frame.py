@@ -39,7 +39,6 @@ class PlateFrameFrame(BaseFrame):
 
         self.dimensions_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="m x m",
             placeholder_text_color="#4F4F4F",
         )
         self.dimensions_input.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
@@ -85,7 +84,6 @@ class PlateFrameFrame(BaseFrame):
 
         self.hot_fluid_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.hot_fluid_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
@@ -101,7 +99,6 @@ class PlateFrameFrame(BaseFrame):
 
         self.hot_fluid_mfr_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="kg/s",
             placeholder_text_color="#4F4F4F",
         )
         self.hot_fluid_mfr_input.grid(row=8, column=1, sticky="ew", padx=10, pady=7)
@@ -138,7 +135,6 @@ class PlateFrameFrame(BaseFrame):
 
         self.cold_fluid_inlet_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="°C",
             placeholder_text_color="#4F4F4F",
         )
         self.cold_fluid_inlet_input.grid(row=6, column=3, sticky="ew", padx=10, pady=7)
@@ -154,7 +150,6 @@ class PlateFrameFrame(BaseFrame):
 
         self.cold_fluid_mfr_input = ctk.CTkEntry(
             input_frame,
-            placeholder_text="kg/s",
             placeholder_text_color="#4F4F4F",
         )
         self.cold_fluid_mfr_input.grid(row=8, column=3, sticky="ew", padx=10, pady=7)
@@ -181,6 +176,21 @@ class PlateFrameFrame(BaseFrame):
             font=ctk.CTkFont(size=16)
         )
         self.results_label.grid(row=10, column=0, columnspan=4)
+        self.update_placeholders()
+
+    def update_placeholders(self):
+        if self.controller.unit_system == "SI":
+            self.dimensions_input.configure(placeholder_text="m x m")
+            self.hot_fluid_inlet_input.configure(placeholder_text="°C")
+            self.hot_fluid_mfr_input.configure(placeholder_text="kg/s")
+            self.cold_fluid_inlet_input.configure(placeholder_text="°C")
+            self.cold_fluid_mfr_input.configure(placeholder_text="kg/s")
+        else: # Imperial
+            self.dimensions_input.configure(placeholder_text="ft x ft")
+            self.hot_fluid_inlet_input.configure(placeholder_text="°F")
+            self.hot_fluid_mfr_input.configure(placeholder_text="lb/s")
+            self.cold_fluid_inlet_input.configure(placeholder_text="°F")
+            self.cold_fluid_mfr_input.configure(placeholder_text="lb/s")
 
     def calculate(self):
         try:

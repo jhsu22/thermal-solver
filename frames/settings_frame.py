@@ -16,7 +16,7 @@ class SettingsFrame(BaseFrame):
 
         version_label = ctk.CTkLabel(
             self.content_frame,
-            text="Thermal Solver v0.1.6 alpha",
+            text=f"Thermal Solver v{self.controller.version}",
             text_color="black",
             font=ctk.CTkFont(size=14)
         )
@@ -37,7 +37,7 @@ class SettingsFrame(BaseFrame):
         )
         units_label.pack(padx=25, pady=0, anchor="w")
 
-        units=tkinter.IntVar(value=1)
+        self.units_var = tkinter.StringVar(value=self.controller.unit_system)
 
         radio_frame = ctk.CTkFrame(self.content_frame, fg_color="transparent")
         radio_frame.pack(padx=20, pady=5, anchor="w")
@@ -48,8 +48,9 @@ class SettingsFrame(BaseFrame):
             text="SI Units",
             text_color="black",
             font=ctk.CTkFont(size=14),
-            variable=units,
-            value=1
+            variable=self.units_var,
+            value="SI",
+            command=lambda: self.controller.set_units("SI")
         )
         si_button.pack(padx=25, side="left")
 
@@ -59,7 +60,8 @@ class SettingsFrame(BaseFrame):
             text="Imperial Units",
             text_color="black",
             font=ctk.CTkFont(size=14),
-            variable=units,
-            value=2
+            variable=self.units_var,
+            value="Imperial",
+            command=lambda: self.controller.set_units("Imperial")
         )
         imperial_button.pack(padx=25, side="left")

@@ -7,11 +7,16 @@ A Python-based thermal systems solver!
 Created as a project for Cal Poly Pomona's ME 4990 course
 """
 
-#from tkextrafont import Font
+# Import custom font (library not macOS compatible)
+import sys
+if sys.platform != "darwin":
+    from tkextrafont import Font
+
 from pathlib import Path
 import customtkinter as ctk
 from PIL import Image
 
+# Import all frames
 from frames.menu_frame import MenuFrame
 from frames.settings_frame import SettingsFrame
 from frames.piping_frame import PipingFrame
@@ -25,13 +30,17 @@ class ThermalSolver(ctk.CTk):
     def __init__(self):
         super().__init__()
 
+        # Application version
+        self.version = "0.1.8-alpha"
+
         # Asset management
         self.BASE_PATH = Path(__file__).parent
         self.FONT_PATH = self.BASE_PATH / "assets" / "fonts" / "PixelifySans.ttf"
         self.IMAGE_PATH = self.BASE_PATH / "assets" / "images"
 
-        # Load custom font
-        #Font(file=self.FONT_PATH, family="Pixelify Sans", size=12)
+        # Load custom font (NOT MACOS COMPATIBLE)
+        if sys.platform != "darwin":
+            Font(file=self.FONT_PATH, family="Pixelify Sans", size=12)
 
         # Load all images into dictionary
         self.images = {
@@ -48,6 +57,9 @@ class ThermalSolver(ctk.CTk):
         self.title("Thermal Solver")
         self.geometry("1000x650")
         self.resizable(False, False)
+
+        # Set default unit system
+        self.unit_system = "SI"
 
         # Container frame to hold pages
         container = ctk.CTkFrame(self)
@@ -79,6 +91,13 @@ class ThermalSolver(ctk.CTk):
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
+
+    # Function to update the unit system
+    def set_units(self, unit_system):
+        self.unit_system = unit_system
+        for frame in self.frames.values():
+            if hasattr(frame, "update_placeholders"):
+                frame.update_placeholders()
 
 if __name__ == "__main__":
     ctk.set_appearance_mode("Light")
