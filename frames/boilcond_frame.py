@@ -146,7 +146,7 @@ class BoilCondFrame(BaseFrame):
             inputs = {key: widget.get() for key, widget in self.input_widgets.items()}
 
             # Pass to the solver
-            results = calculate_boilcond(problem_type, inputs)
+            results = calculate_boilcond(problem_type, inputs, unit_system=self.controller.unit_system)
 
             # Format and display results
             results_text = "\n".join([f"{key.replace('_', ' ').title()}: {value}" for key, value in results.items()])

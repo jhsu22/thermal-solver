@@ -46,48 +46,29 @@ def WaterInterp(temp_w):
     ## Assign Variable Names
 
     j = 0
-    
-    Tsat = list_interpolated[j]
-    j = j + 1
-    Psat= list_interpolated[j]
-    j = j + 1
-    vf= list_interpolated[j]
-    j = j + 1
-    vg= list_interpolated[j]
-    j = j + 1
-    uf= list_interpolated[j]
-    j = j + 1
-    ug= list_interpolated[j]
-    j = j + 1
-    hf= list_interpolated[j]
-    j = j + 1
-    hfg= list_interpolated[j]
-    j = j + 1
-    hg= list_interpolated[j]
-    j = j + 1
-    sf= list_interpolated[j]
-    j = j + 1
-    sg= list_interpolated[j]
-    j = j + 1
-    gamma= list_interpolated[j]
-    j = j + 1
-    rho= list_interpolated[j]
-    j = j + 1
-    mu= list_interpolated[j]
-    j = j + 1
-    nu= list_interpolated[j]
-    j = j + 1
-    sigma= list_interpolated[j]
-    j = j + 1
-    E= list_interpolated[j]
-    j = j + 1
-    Pr= list_interpolated[j]
-    j = j + 1
-    alpha= list_interpolated[j]
-    j = j + 1
-    k= list_interpolated[j]
-    j = j + 1
-    Cp= list_interpolated[j]
-    j = j + 1
 
-    return ((list_interpolated))
+    properties = {
+        "Tsat": list_interpolated[0, 0],
+        "Psat": list_interpolated[0, 1],
+        "vf": list_interpolated[0, 2],
+        "vg": list_interpolated[0, 3],
+        "uf": list_interpolated[0, 4],
+        "ug": list_interpolated[0, 5],
+        "hf": list_interpolated[0, 6],
+        "hfg": list_interpolated[0, 7],
+        "hg": list_interpolated[0, 8],
+        "sf": list_interpolated[0, 9],
+        "sg": list_interpolated[0, 10],
+        "gamma": list_interpolated[0, 11],
+        "rho": list_interpolated[0, 12],
+        "mu": list_interpolated[0, 13],
+        "nu": list_interpolated[0, 14],
+        "sigma": list_interpolated[0, 15],
+        "E": list_interpolated[0, 16],
+        "Pr": list_interpolated[0, 17],
+        "alpha": list_interpolated[0, 18],
+        "k": list_interpolated[0, 19],
+        "cp": list_interpolated[0, 20]
+    }
+
+    return properties

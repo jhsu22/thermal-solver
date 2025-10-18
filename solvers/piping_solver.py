@@ -55,6 +55,7 @@ def calculate_piping(length, material, nominal_dia, fluid, fluid_flow, schedule=
             inside_diameter = pipe_dims.get('Inside Diameter cm')
             inside_diameter_std = inside_diameter / 100
             flow_area = pipe_dims.get('Flow Area cm^2')
+            flow_area_std = flow_area / 10000
             dia_unit = "cm"
             area_unit = "cm²"
 
@@ -78,6 +79,7 @@ def calculate_piping(length, material, nominal_dia, fluid, fluid_flow, schedule=
             inside_diameter = pipe_dims.get('Inside Diameter ft')
             inside_diameter_std = inside_diameter
             flow_area = pipe_dims.get('Flow Area ft^2')
+            flow_area_std = flow_area
             dia_unit = "ft"
             area_unit = "ft²"
 
@@ -101,7 +103,7 @@ def calculate_piping(length, material, nominal_dia, fluid, fluid_flow, schedule=
 
         while error > 0.05:
             # Calculate velocity
-            velocity = fluid_flow / flow_area
+            velocity = fluid_flow / flow_area_std
 
             # Calculate Reynolds number
             re = (fluid_density * velocity * inside_diameter_std) / fluid_viscosity
