@@ -85,8 +85,7 @@ class BoilCondFrame(BaseFrame):
         si_placeholders = {
             "Vertical Plate (L & W)": [
                 ("Surface Temp", "°C", 0, 0), ("Saturated Temp", "°C", 1, 0),
-                ("Length", "m", 0, 1), ("Width", "m", 1, 1),
-                ("Latent Heat", "kJ/kg", 2, 0)
+                ("Length", "m", 0, 1), ("Width", "m", 1, 1)
             ],
             "Vertical Plate (H)": [
                 ("Surface Temp", "°C", 0, 0), ("Height", "m", 1, 0),
@@ -109,8 +108,7 @@ class BoilCondFrame(BaseFrame):
         imperial_placeholders = {
             "Vertical Plate (L & W)": [
                 ("Surface Temp", "°F", 0, 0), ("Saturated Temp", "°F", 1, 0),
-                ("Length", "ft", 0, 1), ("Width", "ft", 1, 1),
-                ("Latent Heat", "Btu/lbm", 2, 0)
+                ("Length", "ft", 0, 1), ("Width", "ft", 1, 1)
             ],
             "Vertical Plate (H)": [
                 ("Surface Temp", "°F", 0, 0), ("Height", "ft", 1, 0),
@@ -130,7 +128,6 @@ class BoilCondFrame(BaseFrame):
                 ("Pressure", "atm", 0, 1)
             ]
         }
-
 
         # Create and store widgets for the selected problem
         problem_inputs = imperial_placeholders if self.controller.unit_system == "Imperial" else si_placeholders

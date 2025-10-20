@@ -38,7 +38,8 @@ class PipingFrame(BaseFrame):
         self.length_entry = ctk.CTkEntry(
             input_frame,
             placeholder_text_color="#4F4F4F",
-            text_color="black"
+            text_color="black",
+            width=150
         )
         self.length_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
 
@@ -66,7 +67,8 @@ class PipingFrame(BaseFrame):
             font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd",
             dropdown_hover_color="#999999",
-            dropdown_text_color="black"
+            dropdown_text_color="black",
+            width=250
         )
 
         # Row 2 - Type Selector (Only for Copper)
