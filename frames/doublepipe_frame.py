@@ -256,6 +256,7 @@ class DoublePipeFrame(BaseFrame):
                 fluid1=fluid1, fluid1_inlet_temp=fluid1_inlet_temp, fluid1_outlet_temp=fluid1_outlet_temp, fluid1_mass_flow=fluid1_mass_flow,
                 fluid2=fluid2, fluid2_inlet_temp=fluid2_inlet_temp, fluid2_outlet_temp=fluid2_outlet_temp, fluid2_mass_flow=fluid2_mass_flow
             )
+            self.controller.display_results_window("Calculation Results", calculation_results)
 
         except ValueError:
             self.results_label.configure(text = "Please enter valid inputs in all fields")

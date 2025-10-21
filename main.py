@@ -99,6 +99,33 @@ class ThermalSolver(ctk.CTk):
             if hasattr(frame, "update_placeholders"):
                 frame.update_placeholders()
 
+    # Function to display new results window
+    def display_results_window(self, title, results_text):
+
+        # Create a new window associated with the main app
+        results_win = ctk.CTkToplevel(self)
+        results_win.title(title)
+        results_win.geometry("400x300")
+        results_win.resizable(False, False)
+
+        # Keep results window on top initially
+        results_win.attributes("-topmost", True)
+
+        # Display results in textbox
+        results_textbox = ctk.CTkTextbox(results_win, wrap="word", font=ctk.CTkFont(size=14))
+        results_textbox.pack(expand=True, fill="both", padx=10, pady=10)
+
+        # Insert the results
+        results_textbox.insert("1.0", results_text)
+
+        # Make it read-only
+        results_textbox.configure(state="disabled")
+
+        close_button = ctk.CTkButton(results_win, text="Close", command=results_win.destroy)
+        close_button.pack(pady=10)
+
+        results_win.grab_set()
+
 if __name__ == "__main__":
     ctk.set_appearance_mode("Light")
     ctk.set_default_color_theme("theme.json")

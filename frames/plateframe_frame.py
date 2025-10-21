@@ -212,7 +212,7 @@ class PlateFrameFrame(BaseFrame):
                 cold_fluid_mass_flow=cold_fluid_mass_flow
             )
 
-            self.results_label.configure(text=calculation_results)
+            self.controller.display_results_window("Calculation Results", calculation_results)
 
         except ValueError:
             self.results_label.configure(text="Please enter valid inputs in all fields")

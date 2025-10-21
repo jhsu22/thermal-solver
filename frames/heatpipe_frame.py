@@ -52,7 +52,7 @@ class HeatPipeFrame(BaseFrame):
         wick_mat_label = ctk.CTkLabel(input_frame, text="Wick Material", text_color="black", font=ctk.CTkFont(size=16))
         wick_mat_label.grid(row=5, column=0, sticky="w", padx=5, pady=7)
         self.wick_material_selection = ctk.CTkOptionMenu(
-            input_frame, values=["Stainless Steel Screen", "Copper Screen", "Sintered Nickel"], text_color="black",
+            input_frame, values=["Stainless Steel Screen", "Copper Screen"], text_color="black",
             font=ctk.CTkFont(size=14), dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
             dropdown_text_color="black"
         )
@@ -67,6 +67,11 @@ class HeatPipeFrame(BaseFrame):
         wire_diam_label.grid(row=5, column=2, sticky="w", padx=15, pady=7)
         self.wire_diam_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
         self.wire_diam_entry.grid(row=5, column=3, sticky="ew", padx=5, pady=7)
+
+        layers_label = ctk.CTkLabel(input_frame, text="Layers", text_color="black", font=ctk.CTkFont(size=16))
+        layers_label.grid(row=6, column=2, sticky="w", padx=15, pady=7)
+        self.layers_entry = ctk.CTkEntry(input_frame, placeholder_text="Integer", placeholder_text_color="#4F4F4F")
+        self.layers_entry.grid(row=6, column=3, sticky="ew", padx=5, pady=7)
 
         # --- Section: Operating Conditions ---
         op_label = ctk.CTkLabel(
@@ -127,19 +132,23 @@ class HeatPipeFrame(BaseFrame):
             wick_material = self.wick_material_selection.get()
             mesh = self.mesh_entry.get()
             wire_diam = self.wire_diam_entry.get()
+            layers = self.layers_entry.get()
             working_fluid = self.working_fluid_input.get()
             op_temp = self.op_temp_input.get()
             unit_system = self.controller.unit_system
 
+            print(evap_len, adia_len, cond_len, vapor_diam, wick_material, mesh, wire_diam, layers, working_fluid, op_temp, unit_system)
+
             # Pass inputs to calculator
             calculation_results = calculate_heatpipe(
                 evap_len=evap_len, adia_len=adia_len, cond_len=cond_len, vapor_diam=vapor_diam, wick_material=wick_material,
-                mesh=mesh, wire_diam=wire_diam, working_fluid=working_fluid, op_temp=op_temp, unit_system=unit_system
+                mesh=mesh, wire_diam=wire_diam, layers=layers, working_fluid=working_fluid, op_temp=op_temp, unit_system=unit_system
             )
 
-            self.results_label.configure(text=calculation_results)
+            self.controller.display_results_window("Calculation Results", calculation_results)
 
         except ValueError:
-            self.results_label.configure(text="Please enter valid inputs in all fields.")
+            #self.results_label.configure(text="Please enter valid inputs in all fields.")
+            self.results_label.configure(text=f"ValueError: {e}")  # Show the actual error
         except Exception as e:
             self.results_label.configure(text=f"An error occurred: {e}")

@@ -6,7 +6,7 @@ DEG_C_TO_K = 273.15
 DEG_F_TO_K = lambda F: (F - 32) * 5/9 + DEG_C_TO_K
 IN_TO_M = 0.0254
 
-def calculate_heatpipe(evap_len, adia_len, cond_len, vapor_diam, wick_material, mesh, wire_diam, working_fluid, op_temp, unit_system):
+def calculate_heatpipe(evap_len, adia_len, cond_len, vapor_diam, wick_material, mesh, wire_diam, layers, working_fluid, op_temp, unit_system):
 
     # Take user inputs
     l_evap_input = float(evap_len)
@@ -16,6 +16,7 @@ def calculate_heatpipe(evap_len, adia_len, cond_len, vapor_diam, wick_material, 
     wick_material_input = str(wick_material)
     mesh_input = float(mesh)
     d_wire_input = float(wire_diam)
+    layers = float(layers)
     working_fluid_input = str(working_fluid)
     op_temp_input = float(op_temp)
     unit_system = str(unit_system)
@@ -61,13 +62,17 @@ def calculate_heatpipe(evap_len, adia_len, cond_len, vapor_diam, wick_material, 
 
     sigma = PropsSI('I', 'T', op_temp_k, 'Q', 0, working_fluid_input)
 
-    k_l = PropsSI('Conductivity', 'T', op_temp_k, 'Q', 0, working_fluid_input)
+    k_l = PropsSI('L', 'T', op_temp_k, 'Q', 0, working_fluid_input)
 
-    k_w = 14.9
+    # Find wick thermal conductivity
+    if wick_material_input == "Stainless Steel Screen":
+        k_w = 14.9
+    elif wick_material_input == "Copper Screen":
+        k_w = 400
 
-    t_wire = 3 * (2 * d_wire_m)
+    t_wick = layers * (2 * d_wire_m)
 
-    d_i = d_vap_m + (2 * t_wire)
+    d_i = d_vap_m + (2 * t_wick)
 
     # Find capillary limit
     rce = 1 / (2 * mesh_m)
@@ -80,13 +85,13 @@ def calculate_heatpipe(evap_len, adia_len, cond_len, vapor_diam, wick_material, 
     # Vapor pressure drop
     del_pv = (c * 16 * muv) / (2 * ((d_vap_m / 2)**2) * a_vap * rhov * hfg)
 
-    a_w = (np.pi * (d_i**2 - d_vap_m**2)) / 4           # Cross sectional area of wick
+    a_w = (np.pi * (d_i**2 - d_vap_m**2)) / 4           # Cross-sectional area of wick
 
     eps = 1 - ((1.05 * np.pi * mesh_m * d_wire_m) / 4)
 
     k = (d_wire_m**2 * eps**3) / (122 * (1 - eps)**2)   # Wick permeability
 
-    # Liquid presure drop
+    # Liquid pressure drop
     del_pl = (mul * l_eff) / (k * a_w * hfg * rhol)
 
     u = 0

@@ -218,7 +218,7 @@ class PipingFrame(BaseFrame):
                 fluid=fluid, fluid_flow=float(fluid_flow), schedule=schedule, ptype=ptype, unit_system=self.controller.unit_system
             )
 
-            self.results_label.configure(text=calculation_results)
+            self.controller.display_results_window("Calculation Results", f"=================\nPIPING RESULTS\n=================\n{calculation_results}")
 
         except ValueError:
             self.results_label.configure(text="Please enter valid inputs in all fields")

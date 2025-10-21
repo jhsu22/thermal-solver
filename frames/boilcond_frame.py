@@ -147,7 +147,7 @@ class BoilCondFrame(BaseFrame):
 
             # Format and display results
             results_text = "\n".join([f"{key.replace('_', ' ').title()}: {value}" for key, value in results.items()])
-            self.results_label.configure(text=results_text)
+            self.controller.display_results_window("Calculation Results", results_text)
 
         except ValueError:
             self.results_label.configure(text="Please enter valid numbers in all fields.")

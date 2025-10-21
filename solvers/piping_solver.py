@@ -72,7 +72,7 @@ def calculate_piping(length, material, nominal_dia, fluid, fluid_flow, schedule=
                 epsilon = 0.0015
             roughness_unit = "mm"
 
-            pressure_unit = "Pa"
+            pressure_unit = "kPa"
 
         else:  # Imperial
             # Diameter and flow area values from tables
@@ -96,7 +96,7 @@ def calculate_piping(length, material, nominal_dia, fluid, fluid_flow, schedule=
                 epsilon = 5.91E-5
             roughness_unit = "in"
 
-            pressure_unit = "psi"
+            pressure_unit = "ksi"
 
         error = 1
         friction_factor = 0.02 # Initial guess for iteration
@@ -122,7 +122,9 @@ def calculate_piping(length, material, nominal_dia, fluid, fluid_flow, schedule=
         # Calculate pressure drop
         del_p = ((friction_factor * length) / inside_diameter_std) * ((fluid_density * velocity**2) / 2)
 
-        return f"Pressure Drop: {del_p:.2f} {pressure_unit}"
+        del_p_print = del_p / 1000
+
+        return f"Pressure Drop: {del_p_print:.2f} {pressure_unit}"
 
     except (ValueError, FileNotFoundError) as e:
         return str(e)

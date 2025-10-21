@@ -198,7 +198,7 @@ class ShellTubeFrame(BaseFrame):
                 cool_fluid_mass_flow=cool_fluid_mass_flow
             )
 
-            self.results_label.configure(text=calculation_results)
+            self.controller.display_results_window("Calculation Results", calculation_results)
 
         except ValueError:
             self.results_label.configure(text="Please enter valid inputs in all fields.")
