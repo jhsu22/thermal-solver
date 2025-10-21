@@ -95,48 +95,48 @@ class ShellTubeFrame(BaseFrame):
 
         # --- Fluid Inputs ---
         # Fluid Selection
-        shell_fluid_label = ctk.CTkLabel(input_frame, text="SHELL-SIDE FLUID", text_color="black",
+        warm_fluid_label = ctk.CTkLabel(input_frame, text="WARM FLUID", text_color="black",
                                          font=ctk.CTkFont(size=16, weight="bold"))
-        shell_fluid_label.grid(row=7, column=0, sticky="w", padx=5, pady=7)
-        self.shell_fluid_input = ctk.CTkOptionMenu(input_frame,
+        warm_fluid_label.grid(row=7, column=0, sticky="w", padx=5, pady=7)
+        self.warm_fluid_input = ctk.CTkOptionMenu(input_frame,
                                                    values=["Water", "Benzene", "Hexane", "Ethylene Glycol", "Oil"],
                                                    text_color="black", font=ctk.CTkFont(size=14),
                                                    dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
                                                    dropdown_text_color="black")
-        self.shell_fluid_input.grid(row=7, column=1, sticky="ew", padx=5, pady=7)
+        self.warm_fluid_input.grid(row=7, column=1, sticky="ew", padx=5, pady=7)
 
-        tube_fluid_label = ctk.CTkLabel(input_frame, text="TUBE-SIDE FLUID", text_color="black",
+        cool_fluid_label = ctk.CTkLabel(input_frame, text="COOL FLUID", text_color="black",
                                         font=ctk.CTkFont(size=16, weight="bold"))
-        tube_fluid_label.grid(row=7, column=2, sticky="w", padx=15, pady=7)
-        self.tube_fluid_input = ctk.CTkOptionMenu(input_frame,
+        cool_fluid_label.grid(row=7, column=2, sticky="w", padx=15, pady=7)
+        self.cool_fluid_input = ctk.CTkOptionMenu(input_frame,
                                                   values=["Water", "Benzene", "Hexane", "Ethylene Glycol", "Oil"],
                                                   text_color="black", font=ctk.CTkFont(size=14),
                                                   dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
                                                   dropdown_text_color="black")
-        self.tube_fluid_input.grid(row=7, column=3, sticky="ew", padx=5, pady=7)
+        self.cool_fluid_input.grid(row=7, column=3, sticky="ew", padx=5, pady=7)
 
         # Inlet Temp
-        shell_inlet_label = ctk.CTkLabel(input_frame, text="Inlet Temp", text_color="black", font=ctk.CTkFont(size=16))
-        shell_inlet_label.grid(row=8, column=0, sticky="w", padx=5, pady=7)
-        self.shell_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
-        self.shell_fluid_inlet_input.grid(row=8, column=1, sticky="ew", padx=5, pady=7)
+        warm_inlet_label = ctk.CTkLabel(input_frame, text="Inlet Temp", text_color="black", font=ctk.CTkFont(size=16))
+        warm_inlet_label.grid(row=8, column=0, sticky="w", padx=5, pady=7)
+        self.warm_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
+        self.warm_fluid_inlet_input.grid(row=8, column=1, sticky="ew", padx=5, pady=7)
 
-        tube_inlet_label = ctk.CTkLabel(input_frame, text="Inlet Temp", text_color="black", font=ctk.CTkFont(size=16))
-        tube_inlet_label.grid(row=8, column=2, sticky="w", padx=15, pady=7)
-        self.tube_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
-        self.tube_fluid_inlet_input.grid(row=8, column=3, sticky="ew", padx=5, pady=7)
+        cool_inlet_label = ctk.CTkLabel(input_frame, text="Inlet Temp", text_color="black", font=ctk.CTkFont(size=16))
+        cool_inlet_label.grid(row=8, column=2, sticky="w", padx=15, pady=7)
+        self.cool_fluid_inlet_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
+        self.cool_fluid_inlet_input.grid(row=8, column=3, sticky="ew", padx=5, pady=7)
 
         # Mass Flow Rate
-        shell_mfr_label = ctk.CTkLabel(input_frame, text="Mass Flow Rate", text_color="black",
+        warm_mfr_label = ctk.CTkLabel(input_frame, text="Mass Flow Rate", text_color="black",
                                        font=ctk.CTkFont(size=16))
-        shell_mfr_label.grid(row=9, column=0, sticky="w", padx=5, pady=7)
-        self.shell_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
-        self.shell_fluid_mfr_input.grid(row=9, column=1, sticky="ew", padx=5, pady=7)
+        warm_mfr_label.grid(row=9, column=0, sticky="w", padx=5, pady=7)
+        self.warm_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
+        self.warm_fluid_mfr_input.grid(row=9, column=1, sticky="ew", padx=5, pady=7)
 
-        tube_mfr_label = ctk.CTkLabel(input_frame, text="Mass Flow Rate", text_color="black", font=ctk.CTkFont(size=16))
-        tube_mfr_label.grid(row=9, column=2, sticky="w", padx=15, pady=7)
-        self.tube_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
-        self.tube_fluid_mfr_input.grid(row=9, column=3, sticky="ew", padx=5, pady=7)
+        cool_mfr_label = ctk.CTkLabel(input_frame, text="Mass Flow Rate", text_color="black", font=ctk.CTkFont(size=16))
+        cool_mfr_label.grid(row=9, column=2, sticky="w", padx=15, pady=7)
+        self.cool_fluid_mfr_input = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
+        self.cool_fluid_mfr_input.grid(row=9, column=3, sticky="ew", padx=5, pady=7)
 
         # Calculate button
         calculate_button = ctk.CTkButton(
@@ -156,19 +156,19 @@ class ShellTubeFrame(BaseFrame):
             self.tube_od_entry.configure(placeholder_text="in")
             self.shell_id_entry.configure(placeholder_text="mm")
             self.tube_pitch_entry.configure(placeholder_text="mm")
-            self.shell_fluid_inlet_input.configure(placeholder_text="°C")
-            self.tube_fluid_inlet_input.configure(placeholder_text="°C")
-            self.shell_fluid_mfr_input.configure(placeholder_text="kg/s")
-            self.tube_fluid_mfr_input.configure(placeholder_text="kg/s")
+            self.warm_fluid_inlet_input.configure(placeholder_text="°C")
+            self.cool_fluid_inlet_input.configure(placeholder_text="°C")
+            self.warm_fluid_mfr_input.configure(placeholder_text="kg/s")
+            self.cool_fluid_mfr_input.configure(placeholder_text="kg/s")
         else: # Imperial
             self.length_entry.configure(placeholder_text="ft")
             self.tube_od_entry.configure(placeholder_text="in")
             self.shell_id_entry.configure(placeholder_text="in")
             self.tube_pitch_entry.configure(placeholder_text="in")
-            self.shell_fluid_inlet_input.configure(placeholder_text="°F")
-            self.tube_fluid_inlet_input.configure(placeholder_text="°F")
-            self.shell_fluid_mfr_input.configure(placeholder_text="lb/s")
-            self.tube_fluid_mfr_input.configure(placeholder_text="lb/s")
+            self.warm_fluid_inlet_input.configure(placeholder_text="°F")
+            self.cool_fluid_inlet_input.configure(placeholder_text="°F")
+            self.warm_fluid_mfr_input.configure(placeholder_text="lb/s")
+            self.cool_fluid_mfr_input.configure(placeholder_text="lb/s")
 
     def calculate(self):
         try:
@@ -181,21 +181,21 @@ class ShellTubeFrame(BaseFrame):
             tube_pitch = self.tube_pitch_entry.get()
             passes = self.passes_input.get()
             baffles = self.baffles_input.get()
-            shell_fluid = self.shell_fluid_input.get()
-            shell_fluid_inlet_temp = self.shell_fluid_inlet_input.get()
-            shell_fluid_mass_flow = self.shell_fluid_mfr_input.get()
-            tube_fluid = self.tube_fluid_input.get()
-            tube_fluid_inlet_temp = self.tube_fluid_inlet_input.get()
-            tube_fluid_mass_flow = self.tube_fluid_mfr_input.get()
+            warm_fluid = self.warm_fluid_input.get()
+            warm_fluid_inlet_temp = self.warm_fluid_inlet_input.get()
+            warm_fluid_mass_flow = self.warm_fluid_mfr_input.get()
+            cool_fluid = self.cool_fluid_input.get()
+            cool_fluid_inlet_temp = self.cool_fluid_inlet_input.get()
+            cool_fluid_mass_flow = self.cool_fluid_mfr_input.get()
 
             # Pass inputs to calculator to get results
             calculation_results = calculate_shelltube(
                 length=length, shell_id=shell_id, tube_od=tube_od, tube_bwg=tube_bwg,
                 arrangement=arrangement, tube_pitch=tube_pitch, passes=passes, baffles=baffles,
-                shell_fluid=shell_fluid, shell_fluid_inlet_temp=shell_fluid_inlet_temp,
-                shell_fluid_mass_flow=shell_fluid_mass_flow,
-                tube_fluid=tube_fluid, tube_fluid_inlet_temp=tube_fluid_inlet_temp,
-                tube_fluid_mass_flow=tube_fluid_mass_flow
+                warm_fluid=warm_fluid, warm_fluid_inlet_temp=warm_fluid_inlet_temp,
+                warm_fluid_mass_flow=warm_fluid_mass_flow,
+                cool_fluid=cool_fluid, cool_fluid_inlet_temp=cool_fluid_inlet_temp,
+                cool_fluid_mass_flow=cool_fluid_mass_flow
             )
 
             self.results_label.configure(text=calculation_results)
