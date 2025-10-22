@@ -320,10 +320,13 @@ class DoublePipeFrame(BaseFrame):
                 fluid2=fluid2, fluid2_inlet_temp=fluid2_inlet_temp, fluid2_mass_flow=fluid2_mass_flow,
                 schedule=schedule, ptype=ptype
             )
-            self.controller.display_results_window("Calculation Results", calculation_results)
+            results_text = "\n".join([f"{key.title()}: {value}" for key, value in calculation_results.items()])
+            self.controller.display_results_window("Calculation Results",
+                                                   f"==========================================\nDOUBLE PIPE HX RESULTS\n"
+                                                   f"==========================================\n{results_text}")
 
-        except ValueError:
-            self.results_label.configure(text = "Please enter valid inputs in all fields")
+        except ValueError as e:
+            self.results_label.configure(text = f"An error occured: {e}")
 
         except Exception as e:
             self.results_label.configure(text = f"An error occurred: {e}")

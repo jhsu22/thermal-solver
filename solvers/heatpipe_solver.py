@@ -126,7 +126,6 @@ def calculate_heatpipe(evap_len, adia_len, cond_len, vapor_diam, wick_material, 
     # Avoid division by zero or log(1) if ri=rv
     q_boiling = q_boiling_num / q_boiling_den if q_boiling_den != 0 else float('inf')
 
-
     results = {
         "Capillary Limit": f"{q_capillary:.2f} W",
         "Sonic Limit": f"{q_sonic:.2f} W",

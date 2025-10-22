@@ -31,7 +31,7 @@ class ThermalSolver(ctk.CTk):
         super().__init__()
 
         # Application version
-        self.version = "0.1.8-alpha"
+        self.version = "1.0.0"
 
         # Asset management
         self.BASE_PATH = Path(__file__).parent
@@ -55,7 +55,7 @@ class ThermalSolver(ctk.CTk):
 
         # Window Configuration
         self.title("Thermal Solver")
-        self.geometry("1000x850")
+        self.geometry("1000x720")
         self.resizable(False, False)
 
         # Set default unit system

@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from pathlib import Path
-from solvers.waterinterpolator import WaterInterp
 from CoolProp.CoolProp import PropsSI
 
 # Conversion Factors
@@ -112,8 +111,8 @@ def calculate_shelltube(
     temp2 = (Temp1 + temp1) * .5       # initial guess temp2
 
     while t_loop == True:
-        Tavg = (Temp1 + Temp2) * .5      # Tavg based on Temp1 and Temp2
-        tavg = (temp1 + temp2) * .5      # tavg based on temp1 and temp2
+        Tavg = (Temp1 + Temp2) * .5 + 273.15      # Tavg based on Temp1 and Temp2
+        tavg = (temp1 + temp2) * .5 + 273.15     # tavg based on temp1 and temp2
         
         if wiswater == True:
             rho_w = PropsSI('D', 'T', Tavg, 'P', pressure_pa, 'Water')    # Density
@@ -306,5 +305,11 @@ def calculate_shelltube(
         deltaP_s = rho_c * V_s**2 * D_s * f_s * (N_b + 1) / (2 * D_e)   # pressure drop in shell
         deltaP_t = rho_w * V_t**2 * (f_t * Length / ID_t + 4)  * N_p / 2     # pressure drop in tubes
 
-    return(f"{U_o:.2f},   {U_old:.2f }]")
+    #return(f"{U_o:.2f},   {U_old:.2f}]")
 
+    results = {
+        "New Exchanger Coefficient": f"{U_o:.2f}",
+        "1 y/o Exchanger Coefficient": f"{U_old:.2f}",
+    }
+
+    return results

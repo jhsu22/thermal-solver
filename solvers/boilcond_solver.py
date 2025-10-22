@@ -76,10 +76,14 @@ def vertical_plate_lw(inputs, unit_system):
     # Calculate condensation rate
     cond_rate = q / corrected_hfg
 
+    # Unit conversion
+    q = q / 1000
+    cond_rate = cond_rate * 1000
+
     results = {
-        "Heat Transfer Rate (W)": f"{q:.2f}",
-        "Conductivity (W/mK)": f"{hl:.2f}",
-        "Condensation Rate (kg/s)": f"{cond_rate:.2f}"
+        "Heat Transfer Rate": f"{q:.2f} kW",
+        "Conductivity": f"{hl:.2f} W/mK",
+        "Condensation Rate": f"{cond_rate:.2f} g/s"
     }
     return results
 
@@ -143,10 +147,14 @@ def vertical_plate_h(inputs, unit_system):
     # Calculate condensation rate
     mcond = q / corrected_hfg
 
+    # Unit conversion
+    q = q / 1000
+    mcond = mcond * 1000
+
     results = {
         "Flow Regime": regime,
-        "Heat Transfer Rate (W)": f"{q:.2f}",
-        "Condensation Rate (kg/m*s)": f"{mcond:.2f}",
+        "Heat Transfer Rate": f"{q:.2f} kW",
+        "Condensation Rate": f"{mcond:.2f} g/ms",
     }
     return results
 
@@ -202,10 +210,14 @@ def horizontal_tube_od(inputs, unit_system):
     # Find condensation rate
     mcond = q / corrected_hfg
 
+    # Unit conversion
+    q = q / 1000
+    mcond = mcond * 1000
+
     results = {
-        "Overall Heat Transfer Coefficient (W/m²K)": f"{h:.2f}",
-        "Heat Transfer Rate (W)": f"{q:.2f}",
-        "Condensation Rate (kg/s)": f"{mcond:.2f}"
+        "Overall Heat Transfer Coefficient": f"{h:.2f} W/m²K",
+        "Heat Transfer Rate": f"{q:.2f} kW",
+        "Condensation Rate ": f"{mcond:.2f} g/s"
     }
     return results
 
@@ -267,10 +279,13 @@ def horizontal_tube_od_id(inputs, unit_system):
     # Find condensation rate
     mcond = (u*delt) / hfg
 
+    # Unit conversion
+    mcond = mcond * 1000
+
     results = {
-        "Overall Heat Transfer Coefficient (W/m²K)": f"{u:.2f}",
-        "Heat Transfer Rate Per Unit Length (W/m)": f"{q_per_l:.2f}",
-        "Condensation Rate (kg/s)": f"{mcond:.2f}"
+        "Overall Heat Transfer Coefficient": f"{u:.2f} W/m²K",
+        "Heat Transfer Rate Per Unit Length": f"{q_per_l:.2f} W/m",
+        "Condensation Rate": f"{mcond:.2f} g/s"
     }
     return results
 
@@ -330,10 +345,15 @@ def circular_heating_element(inputs, unit_system):
     # Find evaporation rate
     mevap = q_boil / (hfg * 1000)
 
+    # Unit conversion
+    q_s = q_s / 1000
+    q_boil = q_boil / 1000
+    mevap = mevap * 1000
+
     results = {
-        "Heat Transfer Rate (W)": f"{q_s:.2f}",
-        "Required Power (W)": f"{q_boil:.2f}",
-        "Evaporation Rate (kg/s)": f"{mevap:.2f}"
+        "Heat Transfer Rate": f"{q_s:.2f} kW",
+        "Required Power": f"{q_boil:.2f kW }",
+        "Evaporation Rate": f"{mevap:.2f} g/s"
     }
     return results
 
