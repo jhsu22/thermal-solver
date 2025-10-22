@@ -273,9 +273,9 @@ def calculate_dphx(
     temp2_C = temp2 - DEG_C_TO_K
 
     results = {
-        "Warm Fluid Outlet Temp (C)": f"{Temp2_C:.2f}",
-        "Cool Fluid Outlet Temp (C)": f"{temp2_C:.2f}",
-        "Overall Heat Transfer Coeff (Uo, W/m2K)": f"{U_o:.2f}",
-        "Heat Transfer Rate (q, W)": f"{q:.2f}",
+        "Warm Fluid Outlet Temp": f"{Temp2_C:.2f} °C",
+        "Cool Fluid Outlet Temp": f"{temp2_C:.2f} °C",
+        "Exchanger Coefficient": f"{U_o:.2f}",
+        "Heat Transfer Rate": f"{q:.2f} W",
     }
     return results

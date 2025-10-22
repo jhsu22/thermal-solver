@@ -74,7 +74,7 @@ class PlateFrameFrame(BaseFrame):
 
         self.hot_fluid_input = ctk.CTkOptionMenu(
             input_frame,
-            values=["Water", "Hexane", "Ethylene Glycol", "Benzene", "Oil"],
+            values=["Water", "Hexane", "Ethanol", "Benzene", "R134a"],
             text_color="black",
             font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd",
@@ -125,7 +125,7 @@ class PlateFrameFrame(BaseFrame):
 
         self.cold_fluid_input = ctk.CTkOptionMenu(
             input_frame,
-            values=["Water", "Hexane", "Ethylene Glycol", "Benzene", "Oil"],
+            values=["Water", "Hexane", "Ethanol", "Benzene", "R134a"],
             text_color="black",
             font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd",
@@ -225,8 +225,10 @@ class PlateFrameFrame(BaseFrame):
                 cold_fluid=cold_fluid, cold_fluid_inlet_temp=cold_fluid_inlet_temp,
                 cold_fluid_mass_flow=cold_fluid_mass_flow
             )
-
-            self.controller.display_results_window("Calculation Results", calculation_results)
+            results_text = "\n".join([f"{key.title()}: {value}" for key, value in calculation_results.items()])
+            self.controller.display_results_window("Calculation Results",
+                                                   f"==========================================\nPLATE FRAME HX RESULTS\n"
+                                                   f"==========================================\n{results_text}")
 
         except ValueError:
             self.results_label.configure(text="Please enter valid inputs in all fields")

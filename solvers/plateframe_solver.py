@@ -202,13 +202,18 @@ def calculate_plateframe(plates, length, width, hot_fluid, hot_fluid_inlet_temp,
     V_p = 0
     deltaP_w = f_w * Len * rho_w * V_w**2 / (D_h * 2) + (1.3 * rho_w * V_p)/2
     deltaP_c = f_c * Len * rho_c * V_c**2 / (D_h * 2) + (1.3 * rho_c * V_p)/2
-    
+
+    # Unit conversion for nicer print
+    q_o = -(q_o / 10000)
+    deltaP_w = deltaP_w / 1000
+    deltaP_c = deltaP_c / 1000
+
     results = {
-        "U_o": f"{U_o:.2f}",
-        "q_o": f"{q_o:.2f}",
-        "T2": f"{Temp2:.2f}",
-        "t2": f"{temp2:.2f}",
-        "deltaP_w": f"{deltaP_w:.2f}",
-        "deltaP_c": f"{deltaP_c:.2f}",
+        "Exchanger Coefficient": f"{U_o:.2f}",
+        "Heat Transfer Rate": f"{q_o:.2f} kW",
+        "Warm Fluid Outlet Temperature": f"{Temp2:.2f} °C",
+        "Cool Fluid Outlet Temperature": f"{temp2:.2f} °C",
+        "Warm Fluid Pressure Drop": f"{deltaP_w:.2f} kPa",
+        "Cool Fluid Pressure Drop": f"{deltaP_c:.2f} kPa",
     }
     return results

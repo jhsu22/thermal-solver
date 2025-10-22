@@ -122,7 +122,7 @@ class ShellTubeFrame(BaseFrame):
                                          font=ctk.CTkFont(size=16, weight="bold"))
         warm_fluid_label.grid(row=7, column=0, sticky="w", padx=5, pady=7)
         self.warm_fluid_input = ctk.CTkOptionMenu(input_frame,
-                                                   values=["Water", "Benzene", "Hexane", "Ethylene Glycol", "Oil"],
+                                                   values=["Water", "Hexane", "Ethanol", "Benzene", "R134a"],
                                                    text_color="black", font=ctk.CTkFont(size=14),
                                                    dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
                                                    dropdown_text_color="black")
@@ -132,7 +132,7 @@ class ShellTubeFrame(BaseFrame):
                                         font=ctk.CTkFont(size=16, weight="bold"))
         cool_fluid_label.grid(row=7, column=2, sticky="w", padx=15, pady=7)
         self.cool_fluid_input = ctk.CTkOptionMenu(input_frame,
-                                                  values=["Water", "Benzene", "Hexane", "Ethylene Glycol", "Oil"],
+                                                  values=["Water", "Hexane", "Ethanol", "Benzene", "R134a"],
                                                   text_color="black", font=ctk.CTkFont(size=14),
                                                   dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
                                                   dropdown_text_color="black")
