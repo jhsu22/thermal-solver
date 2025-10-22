@@ -32,16 +32,27 @@ class PlateFrameFrame(BaseFrame):
         )
         self.plates_input.grid(row=1, column=1, sticky="ew", padx=5, pady=7)
 
-        # Plate Dimensions
-        dimensions_label = ctk.CTkLabel(input_frame, text="Plate Dimensions (LxW)", text_color="black",
+        # Plate Length
+        length_label = ctk.CTkLabel(input_frame, text="Plate Length", text_color="black",
                                         font=ctk.CTkFont(size=16))
-        dimensions_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
+        length_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
 
-        self.dimensions_input = ctk.CTkEntry(
+        self.length_input = ctk.CTkEntry(
             input_frame,
             placeholder_text_color="#4F4F4F",
         )
-        self.dimensions_input.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
+        self.length_input.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
+
+        # Plate Width
+        width_label = ctk.CTkLabel(input_frame, text="Plate Width", text_color="black",
+                                        font=ctk.CTkFont(size=16))
+        width_label.grid(row=2, column=2, sticky="w", padx=5, pady=7)
+
+        self.width_input = ctk.CTkEntry(
+            input_frame,
+            placeholder_text_color="#4F4F4F",
+        )
+        self.width_input.grid(row=2, column=3, sticky="ew", padx=5, pady=7)
 
         # Section Title: Fluid Settings
         fluid_label = ctk.CTkLabel(
@@ -180,13 +191,15 @@ class PlateFrameFrame(BaseFrame):
 
     def update_placeholders(self):
         if self.controller.unit_system == "SI":
-            self.dimensions_input.configure(placeholder_text="m x m")
+            self.length_input.configure(placeholder_text="m")
+            self.width_input.configure(placeholder_text="m")
             self.hot_fluid_inlet_input.configure(placeholder_text="°C")
             self.hot_fluid_mfr_input.configure(placeholder_text="kg/s")
             self.cold_fluid_inlet_input.configure(placeholder_text="°C")
             self.cold_fluid_mfr_input.configure(placeholder_text="kg/s")
         else: # Imperial
-            self.dimensions_input.configure(placeholder_text="ft x ft")
+            self.length_input.configure(placeholder_text="ft")
+            self.width_input.configure(placeholder_text="ft")
             self.hot_fluid_inlet_input.configure(placeholder_text="°F")
             self.hot_fluid_mfr_input.configure(placeholder_text="lb/s")
             self.cold_fluid_inlet_input.configure(placeholder_text="°F")
@@ -196,7 +209,8 @@ class PlateFrameFrame(BaseFrame):
         try:
             # Take all input parameters from gui elements
             plates = self.plates_input.get()
-            dimensions = self.dimensions_input.get()
+            length = self.length_input.get()
+            width = self.width_input.get()
             hot_fluid = self.hot_fluid_input.get()
             hot_fluid_inlet_temp = self.hot_fluid_inlet_input.get()
             hot_fluid_mass_flow = self.hot_fluid_mfr_input.get()
@@ -206,7 +220,7 @@ class PlateFrameFrame(BaseFrame):
 
             # Pass inputs to calculator to get results
             calculation_results = calculate_plateframe(
-                plates=plates, dimensions=dimensions, hot_fluid=hot_fluid,
+                plates=plates, length=length, width=width, hot_fluid=hot_fluid,
                 hot_fluid_inlet_temp=hot_fluid_inlet_temp, hot_fluid_mass_flow=hot_fluid_mass_flow,
                 cold_fluid=cold_fluid, cold_fluid_inlet_temp=cold_fluid_inlet_temp,
                 cold_fluid_mass_flow=cold_fluid_mass_flow

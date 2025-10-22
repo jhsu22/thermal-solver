@@ -6,18 +6,18 @@ from CoolProp.CoolProp import PropsSI
 
 pressure_pa = 101325
 
-def calculate_plateframe(plates, dimensions, hot_fluid, hot_fluid_inlet_temp, hot_fluid_mass_flow, 
+def calculate_plateframe(plates, length, width, hot_fluid, hot_fluid_inlet_temp, hot_fluid_mass_flow, 
                          cold_fluid, cold_fluid_inlet_temp, cold_fluid_mass_flow):
 
     ## Givens
 
     # mass flow rates
-    m_w = hot_fluid_mass_flow     # mass flow rate of warmer fluid
-    m_c = cold_fluid_mass_flow       # mass flow rate of cooler fluid
+    m_w = float(hot_fluid_mass_flow)     # mass flow rate of warmer fluid
+    m_c = float(cold_fluid_mass_flow)       # mass flow rate of cooler fluid
 
     # inlet temps
-    Temp1 = 30                # inlet temp of warmer fluid
-    temp1 = 6                 # inlet temp of cooler fluid
+    Temp1 = float(hot_fluid_inlet_temp)                # inlet temp of warmer fluid
+    temp1 = float(cold_fluid_inlet_temp)                 # inlet temp of cooler fluid
 
     # plate dimensions and properties
     b = .6       # plate width
@@ -72,95 +72,92 @@ def calculate_plateframe(plates, dimensions, hot_fluid, hot_fluid_inlet_temp, ho
         
     
 
-    ## Plate Dimensions and Properties
+        ## Plate Dimensions and Properties
 
-    A_o = b * Len     # plate surface area
-    Flow_Area = s * b    # flow area
-    D_h = 2 * s     # hydraulic flow
+        A_o = b * Len     # plate surface area
+        Flow_Area = s * b    # flow area
+        D_h = 2 * s     # hydraulic flow
 
-    ## Fluid Velocities
+        ## Fluid Velocities
 
-    if (N_s % 2) == 1:          # if Ns is odd
-        V_w = m_w/(rho_w*Flow_Area)/((N_s + 1)/2)     # velocity warm
-        V_c = m_c/(rho_c*Flow_Area)/((N_s + 1)/2)     # velocity cool
-    else:
-        if m_w_greater:
-            V_w = m_w/(rho_w*Flow_Area)/((N_s + 2)/2)     # velocity warm
-            V_c = m_c/(rho_c*Flow_Area)/((N_s)/2)     # velocity cool
+        if (N_s % 2) == 1:          # if Ns is odd
+            V_w = m_w/(rho_w*Flow_Area)/((N_s + 1)/2)     # velocity warm
+            V_c = m_c/(rho_c*Flow_Area)/((N_s + 1)/2)     # velocity cool
         else:
-            V_c = m_c/(rho_c*Flow_Area)/((N_s + 2)/2)     # velocity warm
-            V_w = m_w/(rho_w*Flow_Area)/((N_s)/2)     # velocity cool
+            if m_w_greater:
+                V_w = m_w/(rho_w*Flow_Area)/((N_s + 2)/2)     # velocity warm
+                V_c = m_c/(rho_c*Flow_Area)/((N_s)/2)     # velocity cool
+            else:
+                V_c = m_c/(rho_c*Flow_Area)/((N_s + 2)/2)     # velocity warm
+                V_w = m_w/(rho_w*Flow_Area)/((N_s)/2)     # velocity cool
+            
         
-    
 
-    ## Reynold's Numbers
+        ## Reynold's Numbers
 
-    Re_w = V_w * D_h / nu_w
-    Re_c = V_c * D_h / nu_c
+        Re_w = V_w * D_h / nu_w
+        Re_c = V_c * D_h / nu_c
 
-    ## Nusselt Numbers
+        ## Nusselt Numbers
 
-    if Re_w < 100:
-        Nu_w = 1.86*(D_h * Re_w * pr_w / Len) ** (1/3) # Warm Nusselt
-    else:
-        Nu_w = .374 * Re_w ** 0.668 * pr_w ** (1/3)  # Cool Nusselt
-    
+        if Re_w < 100:
+            Nu_w = 1.86*(D_h * Re_w * pr_w / Len) ** (1/3) # Warm Nusselt
+        else:
+            Nu_w = .374 * Re_w ** 0.668 * pr_w ** (1/3)  # Cool Nusselt
+        
 
-    if Re_c < 100:
-        Nu_c = 1.86*(D_h * Re_c * pr_c / Len) ** (1/3) # Warm Nusselt
-    else:
-        Nu_c = .374 * Re_c ** 0.668 * pr_c ** (1/3)  # Cool Nusselt
-    
+        if Re_c < 100:
+            Nu_c = 1.86*(D_h * Re_c * pr_c / Len) ** (1/3) # Warm Nusselt
+        else:
+            Nu_c = .374 * Re_c ** 0.668 * pr_c ** (1/3)  # Cool Nusselt
+        
 
-    ## Convection Coefficients
-    h_i = Nu_w * k_w / D_h        # inner wall convection coefficient
-    h_o = Nu_c * k_c / D_h        # outer wall convection coefficient
+        ## Convection Coefficients
+        h_i = Nu_w * k_w / D_h        # inner wall convection coefficient
+        h_o = Nu_c * k_c / D_h        # outer wall convection coefficient
 
-    ## Exchanger Coefficients
-    U_o = (1/h_i + t/k + 1/h_o) ** -1   # Overall convection
+        ## Exchanger Coefficients
+        U_o = (1/h_i + t/k + 1/h_o) ** -1   # Overall convection
 
-    ## Capacitances
-    h_cap_w = m_w * cp_w     # heat capacitance warm
-    h_cap_c = m_c * cp_c     # heat capacitance cool
+        ## Capacitances
+        h_cap_w = m_w * cp_w     # heat capacitance warm
+        h_cap_c = m_c * cp_c     # heat capacitance cool
 
-    h_cap_min = min (h_cap_w, h_cap_c)    # min heat cap
+        h_cap_min = min (h_cap_w, h_cap_c)    # min heat cap
 
-    ## Number of Transfer Units and Correction Factor
+        ## Number of Transfer Units and Correction Factor
 
-    N = U_o * A_o * N_s / (h_cap_min)
-    F = 1 - 0.0166 * N
+        N_factor = U_o * A_o * N_s / (h_cap_min)
+        F_factor = 1 - 0.0166 * N_factor
 
-    ## Outlet Temperature Calculations
+        ## Outlet Temperature Calculations
 
-    R = h_cap_c/h_cap_w
+        R_factor = h_cap_c/h_cap_w
 
-    E_counter = np.exp(U_o * A_o * N_s * F * (R-1) / h_cap_c)
+        E_counter = np.exp(U_o * A_o * N_s * F_factor * (R_factor-1) / h_cap_c)
 
-    Temp2_o = Temp2
-    temp2_o = temp2
+        Temp2_o = Temp2
+        temp2_o = temp2
 
-    Temp2 = (Temp1 * (R - 1) - R * temp1 * (1-E_counter)) / (R * E_counter - 1)
+        Temp2 = (Temp1 * (R_factor - 1) - R_factor * temp1 * (1-E_counter)) / (R_factor * E_counter - 1)
 
-    temp2 = (Temp1 - Temp2_o) / R + temp1
+        temp2 = (Temp1 - Temp2_o) / R_factor + temp1
 
-    Tavg = (Temp1 + Temp2)/ 2
-    tavg = (temp1 + temp2)/ 2
+        Tavg = (Temp1 + Temp2)/ 2
+        tavg = (temp1 + temp2)/ 2
+        
+        print(temp2_o)
+        print(temp2)
 
-    T_error = abs((Temp2 - Temp2_o)/Temp2)
-    t_error = abs((temp2 - temp2_o)/temp2)
+        T_error = abs((Temp2 - Temp2_o)/Temp2_o)
+        t_error = abs((temp2 - temp2_o)/temp2_o)
 
-    if T_error < 0.0005 & t_error < 0.0005:
-        t_loop = False
-    
-
-    
-
-    Temp2
-    temp2
+        if (T_error < 0.0005) & (t_error < 0.0005):
+            t_loop = False
 
     ## Log Mean Temperature Diffference
 
-    LMTD = ((Temp1 - temp2) - (Temp2 - temp1)) / np.log((Temp1-temp2)/(Temp2 - temp1))
+    LogMeanTempDiff = ((Temp1 - temp2) - (Temp2 - temp1)) / np.log((Temp1-temp2)/(Temp2 - temp1))
 
     ## Heat Balance for Fluids
 
@@ -169,7 +166,7 @@ def calculate_plateframe(plates, dimensions, hot_fluid, hot_fluid_inlet_temp, ho
 
     ## Heat Balance for the Exchanger
 
-    q_o = U_o * A_o * N_s * F * LMTD
+    q_o = -U_o * A_o * N_s * F_factor * LogMeanTempDiff
 
     ## Fouling Factors and Design Coefficient
 
@@ -177,7 +174,7 @@ def calculate_plateframe(plates, dimensions, hot_fluid, hot_fluid_inlet_temp, ho
 
     ## Area Required to Transfer Heat (Determination of Plate Area)
 
-    A_o = q_o / (U * F * N_s * LMTD)
+    A_o = q_o / (U * F_factor * N_s * LogMeanTempDiff)
 
     ## Friction Factors
 
