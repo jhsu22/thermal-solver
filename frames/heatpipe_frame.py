@@ -70,7 +70,11 @@ class HeatPipeFrame(BaseFrame):
 
         layers_label = ctk.CTkLabel(input_frame, text="Layers", text_color="black", font=ctk.CTkFont(size=16))
         layers_label.grid(row=6, column=2, sticky="w", padx=15, pady=7)
-        self.layers_entry = ctk.CTkEntry(input_frame, placeholder_text="Integer", placeholder_text_color="#4F4F4F")
+        self.layers_entry = ctk.CTkOptionMenu(
+            input_frame, values=["1", "2", "3", "4", "6"], text_color="black",
+            font=ctk.CTkFont(size=14), dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
+            dropdown_text_color="black"
+        )
         self.layers_entry.grid(row=6, column=3, sticky="ew", padx=5, pady=7)
 
         # --- Section: Operating Conditions ---
@@ -144,8 +148,10 @@ class HeatPipeFrame(BaseFrame):
                 evap_len=evap_len, adia_len=adia_len, cond_len=cond_len, vapor_diam=vapor_diam, wick_material=wick_material,
                 mesh=mesh, wire_diam=wire_diam, layers=layers, working_fluid=working_fluid, op_temp=op_temp, unit_system=unit_system
             )
-
-            self.controller.display_results_window("Calculation Results", calculation_results)
+            results_text = "\n".join([f"{key.replace('_', ' ').title()}: {value}" for key, value in calculation_results.items()])
+            self.controller.display_results_window("Calculation Results",
+                                                   f"==========================================\nHEAT PIPE RESULTS\n"
+                                                   f"==========================================\n{results_text}")
 
         except ValueError:
             #self.results_label.configure(text="Please enter valid inputs in all fields.")

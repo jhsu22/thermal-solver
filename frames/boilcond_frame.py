@@ -84,48 +84,48 @@ class BoilCondFrame(BaseFrame):
         # Define inputs for each problem type: (label, {si_placeholder, imperial_placeholder}, row, column_pair)
         si_placeholders = {
             "Vertical Plate (L & W)": [
-                ("Surface Temp", "°C", 0, 0), ("Saturated Temp", "°C", 1, 0),
-                ("Length", "m", 0, 1), ("Width", "m", 1, 1)
+                ("Surface Temp", "°C", 0, 0), ("Length", "m", 0, 1), ("Width", "m", 1, 1),
+                ("Pressure", "101,325 Pa", 1, 0)
             ],
             "Vertical Plate (H)": [
                 ("Surface Temp", "°C", 0, 0), ("Height", "m", 1, 0),
-                ("Pressure", "Pa", 0, 1)
+                ("Pressure", "101,325 Pa", 0, 1)
             ],
             "Horizontal Tube (OD)": [
                 ("Surface Temp", "°C", 0, 0), ("Outer Diameter", "m", 1, 0),
-                ("Pressure", "Pa", 0, 1)
+                ("Pressure", "101,352 Pa", 0, 1)
             ],
             "Horizontal Tube (OD & ID)": [
                 ("Mean Water Temp", "°C", 0, 0), ("Outer Diameter", "m", 1, 0),
                 ("Inner Diameter", "m", 2, 0), ("Outside Convection Coeff", "W/m²K", 0, 1),
-                ("Inside Convection Coeff", "W/m²K", 1, 1), ("Pressure", "Pa", 2, 1)
+                ("Inside Convection Coeff", "W/m²K", 1, 1), ("Pressure", "101,325 Pa", 2, 1)
             ],
             "Circular Heating Element": [
                 ("Surface Temp", "°C", 0, 0), ("Diameter", "m", 1, 0),
-                ("Pressure", "atm", 0, 1)
+                ("Pressure", "1 atm", 0, 1)
             ]
         }
         imperial_placeholders = {
             "Vertical Plate (L & W)": [
-                ("Surface Temp", "°F", 0, 0), ("Saturated Temp", "°F", 1, 0),
-                ("Length", "ft", 0, 1), ("Width", "ft", 1, 1)
+                ("Surface Temp", "°F", 0, 0), ("Length", "ft", 0, 1), ("Width", "ft", 1, 1),
+                ("Pressure", "14.7 psi", 1, 0)
             ],
             "Vertical Plate (H)": [
                 ("Surface Temp", "°F", 0, 0), ("Height", "ft", 1, 0),
-                ("Pressure", "psi", 0, 1)
+                ("Pressure", "14.7 psi", 0, 1)
             ],
             "Horizontal Tube (OD)": [
                 ("Surface Temp", "°F", 0, 0), ("Outer Diameter", "ft", 1, 0),
-                ("Pressure", "psi", 0, 1)
+                ("Pressure", "14.7 psi", 0, 1)
             ],
             "Horizontal Tube (OD & ID)": [
                 ("Mean Water Temp", "°F", 0, 0), ("Outer Diameter", "ft", 1, 0),
                 ("Inner Diameter", "ft", 2, 0), ("Outside Convection Coeff", "Btu/hr·ft²·°F", 0, 1),
-                ("Inside Convection Coeff", "Btu/hr·ft²·°F", 1, 1), ("Pressure", "psi", 2, 1)
+                ("Inside Convection Coeff", "Btu/hr·ft²·°F", 1, 1), ("Pressure", "14.7 psi", 2, 1)
             ],
             "Circular Heating Element": [
                 ("Surface Temp", "°F", 0, 0), ("Diameter", "ft", 1, 0),
-                ("Pressure", "atm", 0, 1)
+                ("Pressure", "1 atm", 0, 1)
             ]
         }
 
@@ -147,7 +147,9 @@ class BoilCondFrame(BaseFrame):
 
             # Format and display results
             results_text = "\n".join([f"{key.replace('_', ' ').title()}: {value}" for key, value in results.items()])
-            self.controller.display_results_window("Calculation Results", results_text)
+            self.controller.display_results_window("Calculation Results",
+                                                   f"==========================================\nBOILING CONDENSATION RESULTS\n"
+                                                   f"==========================================\n{results_text}")
 
         except ValueError:
             self.results_label.configure(text="Please enter valid numbers in all fields.")

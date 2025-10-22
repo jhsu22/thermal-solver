@@ -8,7 +8,7 @@ class SettingsFrame(BaseFrame):
 
         credits_label = ctk.CTkLabel(
             self.content_frame,
-            text="Trailblazed by The Nameless [ jowosie | sammychen1153 ]",
+            text="Trailblazed by The Nameless",
             text_color="black",
             font=ctk.CTkFont(size=14)
         )

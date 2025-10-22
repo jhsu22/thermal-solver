@@ -14,7 +14,7 @@ def vertical_plate_lw(inputs, unit_system):
 
     # Take user inputs
     tsurf_input = float(inputs['surface_temp'])
-    tsat_input = float(inputs['saturated_temp'])
+    pressure_input = float(inputs['pressure'])
     length_input = float(inputs['length'])
     width_input = float(inputs['width'])
 
@@ -24,19 +24,19 @@ def vertical_plate_lw(inputs, unit_system):
     # Internal unit conversion for CoolProp
     if unit_system == "SI":
         tsurf_k = tsurf_input + DEG_C_TO_K
-        tsat_k = tsat_input + DEG_C_TO_K
+        pressure_pa = pressure_input
         width_m = width_input
         length_m = length_input
-        # Get pressure corresponding to Tsat
-        pressure_pa = PropsSI('P', 'T', tsat_k, 'Q', 0, 'Water')
 
     elif unit_system == "Imperial":
         tsurf_k = DEG_F_TO_K(tsurf_input)
-        tsat_k = DEG_F_TO_K(tsat_input)
+        pressure_pa = pressure_input * PSI_TO_KPA * 1000
         width_m = width_input * 0.3048
         length_m = length_input * 0.3048
-        # Get pressure corresponding to Tsat
-        pressure_pa = PropsSI('P', 'T', tsat_k, 'Q', 0, 'Water')
+
+    # Get pressure corresponding to Tsat
+    tsat_k = PropsSI('T', 'P', pressure_pa, 'Q', 0, 'Water')
+    print(tsat_k)
 
     # Calculate film temperature
     tfilm_k = (tsat_k + tsurf_k) / 2
@@ -97,7 +97,7 @@ def vertical_plate_h(inputs, unit_system):
         tsurf_k = tsurf_input + DEG_C_TO_K
         height_m = height_input
     else:
-        pressure_pa = pressure_input * PSI_TO_KPA
+        pressure_pa = pressure_input * PSI_TO_KPA * 1000
         tsurf_k = DEG_F_TO_K(tsurf_input)
         height_m = height_input * 0.3048
 
@@ -164,7 +164,7 @@ def horizontal_tube_od(inputs, unit_system):
         tsurf_k = tsurf_input + DEG_C_TO_K
         outer_diameter_m = outer_diameter_input
     else:
-        pressure_pa = pressure_input * PSI_TO_KPA
+        pressure_pa = pressure_input * PSI_TO_KPA * 1000
         tsurf_k = DEG_F_TO_K(tsurf_input)
         outer_diameter_m = outer_diameter_input * 0.3048
 
