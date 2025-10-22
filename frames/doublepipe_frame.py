@@ -17,7 +17,7 @@ class DoublePipeFrame(BaseFrame):
         input_frame = ctk.CTkFrame(self.content_frame, fg_color="transparent")
         input_frame.pack(pady=10, padx=20, fill="both", expand=True)
 
-        # Configure the grid columns. Column 1 will expand to fill space.
+        # Configure the grid columns
         input_frame.grid_columnconfigure((0,1,2,3), weight=1)
 
         # Section Title: Exchanger Settings
@@ -31,7 +31,12 @@ class DoublePipeFrame(BaseFrame):
         exchanger_label.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 10))
 
         # Row 1: Length
-        length_label = ctk.CTkLabel(input_frame, text="Length", text_color="black", font=ctk.CTkFont(size=16))
+        length_label = ctk.CTkLabel(
+            input_frame,
+            text="Length",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
         length_label.grid(row=1, column=0, sticky="w", padx=5, pady=5)
 
         self.length_entry = ctk.CTkEntry(
@@ -82,7 +87,7 @@ class DoublePipeFrame(BaseFrame):
         )
 
         # Row 3: Inner Nominal Diameter
-        nominal_label_inner = ctk.CTkLabel(input_frame, text="Inner Nominal Diameter", text_color="black",
+        nominal_label_inner = ctk.CTkLabel(input_frame, text="Inner Nominal Dia", text_color="black",
                                      font=ctk.CTkFont(size=16))
         nominal_label_inner.grid(row=3, column=0, sticky="w", padx=5, pady=5)
 
@@ -98,9 +103,9 @@ class DoublePipeFrame(BaseFrame):
         self.nominal_input_inner.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
 
         # Outer Nominal Diameter
-        nominal_label_outer = ctk.CTkLabel(input_frame, text="Outer Nominal Diameter", text_color="black",
+        nominal_label_outer = ctk.CTkLabel(input_frame, text="Outer Nominal Dia", text_color="black",
                                      font=ctk.CTkFont(size=16))
-        nominal_label_outer.grid(row=3, column=2, sticky="w", padx=5, pady=5)
+        nominal_label_outer.grid(row=3, column=2, sticky="ew", padx=0, pady=5)
 
         self.nominal_input_outer = ctk.CTkOptionMenu(
             input_frame,
@@ -133,7 +138,7 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid1_input = ctk.CTkOptionMenu(
             input_frame,
-            values=["Water", "Hexane", "Ethylene Glycol", "Benzene", "Oil"],
+            values=["Water", "Hexane", "Ethanol", "Benzene", "R134a"],
             text_color="black",
             font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd",
@@ -157,21 +162,6 @@ class DoublePipeFrame(BaseFrame):
             placeholder_text_color="#4F4F4F",
         )
         self.fluid1_inlet_input.grid(row=6, column=1, sticky="ew", padx=10, pady=7)
-
-        # Fluid 1 Outlet Temp
-        fluid1_outlet_label = ctk.CTkLabel(
-            input_frame,
-            text="Outlet Temp",
-            text_color="black",
-            font=ctk.CTkFont(size=16)
-        )
-        fluid1_outlet_label.grid(row=7, column=0, sticky="w", padx=10, pady=7)
-
-        self.fluid1_outlet_input = ctk.CTkEntry(
-            input_frame,
-            placeholder_text_color="#4F4F4F",
-        )
-        self.fluid1_outlet_input.grid(row=7, column=1, sticky="ew", padx=10, pady=7)
 
         # Fluid 1 Mass Flow Rate
         fluid1_mfr_label = ctk.CTkLabel(
@@ -199,7 +189,7 @@ class DoublePipeFrame(BaseFrame):
 
         self.fluid2_input = ctk.CTkOptionMenu(
             input_frame,
-            values=["Water", "Hexane", "Ethylene Glycol", "Benzene", "Oil"],
+            values=["Water", "Hexane", "Ethanol", "Benzene", "R134a"],
             text_color="black",
             font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd",
@@ -223,21 +213,6 @@ class DoublePipeFrame(BaseFrame):
             placeholder_text_color="#4F4F4F",
         )
         self.fluid2_inlet_input.grid(row=6, column=3, sticky="ew", padx=10, pady=7)
-
-        # Fluid 2 Outlet Temp
-        fluid2_outlet_label = ctk.CTkLabel(
-            input_frame,
-            text="Outlet Temp",
-            text_color="black",
-            font=ctk.CTkFont(size=16)
-        )
-        fluid2_outlet_label.grid(row=7, column=2, sticky="w", padx=10, pady=7)
-
-        self.fluid2_outlet_input = ctk.CTkEntry(
-            input_frame,
-            placeholder_text_color="#4F4F4F",
-        )
-        self.fluid2_outlet_input.grid(row=7, column=3, sticky="ew", padx=10, pady=7)
 
         # Fluid 2 Mass Flow Rate
         fluid2_mfr_label = ctk.CTkLabel(
@@ -267,6 +242,16 @@ class DoublePipeFrame(BaseFrame):
             command=self.calculate
         )
         calculate_button.grid(row=9, column=0, columnspan=4, pady=50)
+
+        # Results Label
+        self.results_label = ctk.CTkLabel(
+            input_frame,
+            text="",
+            text_color="black",
+            font=ctk.CTkFont(size=16)
+        )
+        self.results_label.grid(row=10, column=0, columnspan=4)
+
         self.update_placeholders()
 
         self.material_selected(self.material_selection.get())
@@ -296,18 +281,14 @@ class DoublePipeFrame(BaseFrame):
         if self.controller.unit_system == "SI":
             self.length_entry.configure(placeholder_text="m")
             self.fluid1_inlet_input.configure(placeholder_text="°C")
-            self.fluid1_outlet_input.configure(placeholder_text="°C")
             self.fluid1_mfr_input.configure(placeholder_text="kg/s")
             self.fluid2_inlet_input.configure(placeholder_text="°C")
-            self.fluid2_outlet_input.configure(placeholder_text="°C")
             self.fluid2_mfr_input.configure(placeholder_text="kg/s")
         else: # Imperial
             self.length_entry.configure(placeholder_text="ft")
             self.fluid1_inlet_input.configure(placeholder_text="°F")
-            self.fluid1_outlet_input.configure(placeholder_text="°F")
             self.fluid1_mfr_input.configure(placeholder_text="lb/s")
             self.fluid2_inlet_input.configure(placeholder_text="°F")
-            self.fluid2_outlet_input.configure(placeholder_text="°F")
             self.fluid2_mfr_input.configure(placeholder_text="lb/s")
 
     def calculate(self):
@@ -319,11 +300,9 @@ class DoublePipeFrame(BaseFrame):
             nominal_dia_outer = self.nominal_input_outer.get()
             fluid1 = self.fluid1_input.get()
             fluid1_inlet_temp = self.fluid1_inlet_input.get()
-            fluid1_outlet_temp = self.fluid1_outlet_input.get()
             fluid1_mass_flow = self.fluid1_mfr_input.get()
             fluid2 = self.fluid2_input.get()
             fluid2_inlet_temp = self.fluid2_inlet_input.get()
-            fluid2_outlet_temp = self.fluid2_outlet_input.get()
             fluid2_mass_flow = self.fluid2_mfr_input.get()
 
             schedule = None
@@ -337,8 +316,8 @@ class DoublePipeFrame(BaseFrame):
             # Pass inputs to calculator to get results
             calculation_results = calculate_dphx(
                 length=length, material=material, nominal_dia_inner=nominal_dia_inner, nominal_dia_outer=nominal_dia_outer,
-                fluid1=fluid1, fluid1_inlet_temp=fluid1_inlet_temp, fluid1_outlet_temp=fluid1_outlet_temp, fluid1_mass_flow=fluid1_mass_flow,
-                fluid2=fluid2, fluid2_inlet_temp=fluid2_inlet_temp, fluid2_outlet_temp=fluid2_outlet_temp, fluid2_mass_flow=fluid2_mass_flow,
+                fluid1=fluid1, fluid1_inlet_temp=fluid1_inlet_temp, fluid1_mass_flow=fluid1_mass_flow,
+                fluid2=fluid2, fluid2_inlet_temp=fluid2_inlet_temp, fluid2_mass_flow=fluid2_mass_flow,
                 schedule=schedule, ptype=ptype
             )
             self.controller.display_results_window("Calculation Results", calculation_results)

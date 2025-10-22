@@ -1,0 +1,23 @@
+# Thermal Solver Requirements
+# Python-based thermal systems solver for Cal Poly Pomona ME 4990
+
+# GUI Framework
+customtkinter>=5.2.0
+
+# Image Processing
+Pillow>=9.0.0
+
+# Scientific Computing
+numpy>=1.21.0
+pandas>=1.3.0
+
+# Thermodynamic Properties
+CoolProp>=6.4.0
+
+# Font Support (Windows only - not macOS compatible)
+tkextrafont>=1.0.0; sys_platform != "darwin"
+
+# Standard Library (no installation needed)
+# pathlib - built-in
+# sys - built-in
+# tkinter - built-in
