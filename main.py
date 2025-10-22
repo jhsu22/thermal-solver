@@ -1,6 +1,6 @@
 """
 Thermal Solver
-The Nameless [ jowosie | sammychen1153 ]
+The Nameless
 
 A Python-based thermal systems solver!
 
