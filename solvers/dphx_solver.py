@@ -121,8 +121,8 @@ def calculate_dphx(
         
         if m_w_greater == A_p_larger:
         # Fluid velocities
-            V_p = m_c / (rho_c * A_p)
-            V_a = m_w / (rho_w * A_a)
+            V_p = m_w / (rho_w * A_p)
+            V_a = m_c / (rho_c * A_a)
 
             # Annulus Equivalent Diameter
             D_h = ID_a - OD_p
@@ -131,10 +131,10 @@ def calculate_dphx(
             # Reynold Numbers
             
             # Calculate Reynolds number for tube
-            Re_p = (rho_c * V_p * ID_p) / mu_c
+            Re_p = (V_p * ID_p) / nu_w
             
             # Calculate Reynolds number for annulus
-            Re_a = (rho_w * V_a * D_h) / mu_w
+            Re_a = (V_a * D_h) / nu_c
             
             # Nusselt Numbers (Nu = h*D/k)
             
@@ -149,4 +149,63 @@ def calculate_dphx(
                 Nu_a = 1.86*(D_e*Re_a*pr_c/Length)
             else:
                 Nu_a = 0.023 * (Re_a ** 0.8) * (pr_c ** 0.4)
+                
+            # Convection Coefficients
+            
+            h_i = Nu_p * k_w / ID_p
+            h_p = h_i * ID_p / OD_p
+            h_a = Nu_a * k_c / D_e
+            
+        else:
+            # Fluid velocities
+            V_p = m_c / (rho_c * A_p)
+            V_a = m_w / (rho_w * A_a)
+
+            # Annulus Equivalent Diameter
+            D_h = ID_a - OD_p
+            D_e = (ID_a**2 - OD_p**2) / OD_p
+            
+            # Reynold Numbers
+            
+            # Calculate Reynolds number for tube
+            Re_p = (rho_w * V_p * ID_p) / mu_w
+            
+            # Calculate Reynolds number for annulus
+            Re_a = (rho_c * V_a * D_h) / mu_c
+            
+            # Nusselt Numbers (Nu = h*D/k)
+            
+            # Calculate Nusselt number for tube
+            if Re_p < 2200:
+                Nu_p = 1.86*(ID_p*Re_p*pr_c/Length)
+            else:
+                Nu_p = 0.023 * (Re_p ** 0.8) * (pr_c ** 0.3)
+            
+            # Calculate Nusselt number for annulus
+            if Re_a < 2200:
+                Nu_a = 1.86*(D_e*Re_a*pr_w/Length)
+            else:
+                Nu_a = 0.023 * (Re_a ** 0.8) * (pr_w ** 0.4)
+                
+            # Convection Coefficients
+            
+            h_i = Nu_p * k_c / ID_p
+            h_p = h_i * ID_p / OD_p
+            h_a = Nu_a * k_w / D_e
+
+        # Exchanger Coefficient
         
+        U_o = (1/h_p + 1/h_a)**-1
+        
+        # Outlet Temperature Calculations
+        
+        R_factor = m_c * cp_c / (m_w * cp_w)
+        
+        A_o = np.pi * OD_p * Length
+        
+        E_counter = np.exp(U_o * A_o * (R_factor - 1)/(m_c * cp_c))
+        
+        T2_o = Temp2
+        t2_o = temp2
+            
+            
