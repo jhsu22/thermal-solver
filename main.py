@@ -31,7 +31,7 @@ class ThermalSolver(ctk.CTk):
         super().__init__()
 
         # Application version
-        self.version = "0.1.8-alpha"
+        self.version = "1.0.0"
 
         # Asset management
         self.BASE_PATH = Path(__file__).parent
