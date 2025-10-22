@@ -55,7 +55,7 @@ class ThermalSolver(ctk.CTk):
 
         # Window Configuration
         self.title("Thermal Solver")
-        self.geometry("1000x850")
+        self.geometry("1000x720")
         self.resizable(False, False)
 
         # Set default unit system

@@ -29,9 +29,15 @@ class ShellTubeFrame(BaseFrame):
         self.length_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=7)
 
         # Tube OD
-        tube_od_label = ctk.CTkLabel(input_frame, text="Tube OD", text_color="black", font=ctk.CTkFont(size=16))
+        tube_od_label = ctk.CTkLabel(input_frame, text="Tube OD (in)", text_color="black", font=ctk.CTkFont(size=16))
         tube_od_label.grid(row=2, column=0, sticky="w", padx=5, pady=7)
-        self.tube_od_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
+        self.tube_od_entry = ctk.CTkOptionMenu(
+            input_frame,
+            values=["0.75", "1"],
+            text_color="black", font=ctk.CTkFont(size=14),
+            dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
+            dropdown_text_color="black"
+        )
         self.tube_od_entry.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
 
         # Tube BWG
@@ -51,15 +57,26 @@ class ShellTubeFrame(BaseFrame):
         passes_label = ctk.CTkLabel(input_frame, text="Number of Tube Passes", text_color="black",
                                     font=ctk.CTkFont(size=16))
         passes_label.grid(row=4, column=0, sticky="w", padx=5, pady=7)
-        self.passes_input = ctk.CTkEntry(input_frame, placeholder_text="e.g., 1, 2, 4",
-                                         placeholder_text_color="#4F4F4F")
+        self.passes_input = ctk.CTkOptionMenu(
+            input_frame,
+            values=["1", "2", "4", "6", "8"],
+            text_color="black", font=ctk.CTkFont(size=14),
+            dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
+            dropdown_text_color="black"
+        )
         self.passes_input.grid(row=4, column=1, sticky="ew", padx=5, pady=7)
 
         # --- Column 2 & 3 ---
         # Shell ID
         shell_id_label = ctk.CTkLabel(input_frame, text="Shell ID", text_color="black", font=ctk.CTkFont(size=16))
         shell_id_label.grid(row=1, column=2, sticky="w", padx=15, pady=7)
-        self.shell_id_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
+        self.shell_id_entry = ctk.CTkOptionMenu(
+            input_frame,
+            values=["8","10", "12", "13.25", "17.25", "19.25", "21.25", "23.25", "25", "27", "29", "31", "33", "35", "37", "39"],
+            text_color="black", font=ctk.CTkFont(size=14),
+            dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
+            dropdown_text_color="black"
+        )
         self.shell_id_entry.grid(row=1, column=3, sticky="ew", padx=5, pady=7)
 
         # Tube Arrangement
@@ -75,9 +92,15 @@ class ShellTubeFrame(BaseFrame):
         self.arrangement_selection.grid(row=2, column=3, sticky="ew", padx=5, pady=7)
 
         # Tube Pitch
-        tube_pitch_label = ctk.CTkLabel(input_frame, text="Tube Pitch", text_color="black", font=ctk.CTkFont(size=16))
+        tube_pitch_label = ctk.CTkLabel(input_frame, text="Tube Pitch (in)", text_color="black", font=ctk.CTkFont(size=16))
         tube_pitch_label.grid(row=3, column=2, sticky="w", padx=15, pady=7)
-        self.tube_pitch_entry = ctk.CTkEntry(input_frame, placeholder_text_color="#4F4F4F")
+        self.tube_pitch_entry = ctk.CTkOptionMenu(
+            input_frame,
+            values=["0.9375", "1", "1.25"],
+            text_color="black", font=ctk.CTkFont(size=14),
+            dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
+            dropdown_text_color="black"
+        )
         self.tube_pitch_entry.grid(row=3, column=3, sticky="ew", padx=5, pady=7)
 
         # Number of Baffles
@@ -153,18 +176,12 @@ class ShellTubeFrame(BaseFrame):
     def update_placeholders(self):
         if self.controller.unit_system == "SI":
             self.length_entry.configure(placeholder_text="m")
-            self.tube_od_entry.configure(placeholder_text="in")
-            self.shell_id_entry.configure(placeholder_text="mm")
-            self.tube_pitch_entry.configure(placeholder_text="mm")
             self.warm_fluid_inlet_input.configure(placeholder_text="°C")
             self.cool_fluid_inlet_input.configure(placeholder_text="°C")
             self.warm_fluid_mfr_input.configure(placeholder_text="kg/s")
             self.cool_fluid_mfr_input.configure(placeholder_text="kg/s")
         else: # Imperial
             self.length_entry.configure(placeholder_text="ft")
-            self.tube_od_entry.configure(placeholder_text="in")
-            self.shell_id_entry.configure(placeholder_text="in")
-            self.tube_pitch_entry.configure(placeholder_text="in")
             self.warm_fluid_inlet_input.configure(placeholder_text="°F")
             self.cool_fluid_inlet_input.configure(placeholder_text="°F")
             self.warm_fluid_mfr_input.configure(placeholder_text="lb/s")
@@ -197,8 +214,10 @@ class ShellTubeFrame(BaseFrame):
                 cool_fluid=cool_fluid, cool_fluid_inlet_temp=cool_fluid_inlet_temp,
                 cool_fluid_mass_flow=cool_fluid_mass_flow
             )
-
-            self.controller.display_results_window("Calculation Results", calculation_results)
+            results_text = "\n".join([f"{key.title()}: {value}" for key, value in calculation_results.items()])
+            self.controller.display_results_window("Calculation Results",
+                                                   f"==========================================\nSHELL TUBE HX RESULTS\n"
+                                                   f"==========================================\n{results_text}")
 
         except ValueError as e:
             self.results_label.configure(text=f"An error occurred: {e}")

@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from pathlib import Path
-from solvers.waterinterpolator import WaterInterp
 from CoolProp.CoolProp import PropsSI
 
 # Conversion Factors
@@ -29,8 +28,8 @@ def calculate_shelltube(
     m_c = float(cool_fluid_mass_flow)       # mass flow rate of cooler fluid
 
     # inlet temps
-    Temp1 =  float(warm_fluid_inlet_temp) + 273.15               # inlet temp of warmer fluid
-    temp1 =  float(cool_fluid_inlet_temp) + 273.15               # inlet temp of cooler fluid
+    Temp1 =  float(warm_fluid_inlet_temp)               # inlet temp of warmer fluid
+    temp1 =  float(cool_fluid_inlet_temp)                # inlet temp of cooler fluid
 
     # Tubing Sizes
     OD_t = float(tube_od)    # Outer D of tubes
@@ -42,7 +41,7 @@ def calculate_shelltube(
     tube_dimensions = pd.read_csv(TUBE_DIMENSIONS_PATH)
     
     # Use tube_od and tube_bwg to find tube_id
-    tube_data = tube_dimensions.loc[tube_dimensions["tube_od_in"]==float(OD_t) & (tube_dimensions["bwg"]==int(tube_bwg))]
+    tube_data = tube_dimensions.loc[(tube_dimensions["tube_od_in"]==OD_t) & (tube_dimensions["bwg"]==int(tube_bwg))]
     
     if tube_data.empty:
         raise ValueError(f"Tube dimensions not found for tube_od_in={OD_t}, bwg={tube_bwg}")
@@ -112,8 +111,8 @@ def calculate_shelltube(
     temp2 = (Temp1 + temp1) * .5       # initial guess temp2
 
     while t_loop == True:
-        Tavg = (Temp1 + Temp2) * .5      # Tavg based on Temp1 and Temp2
-        tavg = (temp1 + temp2) * .5      # tavg based on temp1 and temp2
+        Tavg = (Temp1 + Temp2) * .5 + 273.15      # Tavg based on Temp1 and Temp2
+        tavg = (temp1 + temp2) * .5 + 273.15     # tavg based on temp1 and temp2
         
         if wiswater == True:
             rho_w = PropsSI('D', 'T', Tavg, 'P', pressure_pa, 'Water')    # Density
@@ -306,5 +305,11 @@ def calculate_shelltube(
         deltaP_s = rho_c * V_s**2 * D_s * f_s * (N_b + 1) / (2 * D_e)   # pressure drop in shell
         deltaP_t = rho_w * V_t**2 * (f_t * Length / ID_t + 4)  * N_p / 2     # pressure drop in tubes
 
-    return(f"{U_o:.2f},   {U_old:.2f}")
+    #return(f"{U_o:.2f},   {U_old:.2f}]")
 
+    results = {
+        "New Exchanger Coefficient": f"{U_o:.2f}",
+        "1 y/o Exchanger Coefficient": f"{U_old:.2f}",
+    }
+
+    return results
