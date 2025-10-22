@@ -23,6 +23,8 @@ def calculate_dphx(
 # Tubing Lookup, set ID_a, ID_p, OD_p
     BASE_PATH = Path(__file__).parent.parent
     PIPE_DIMENSIONS_PATH = BASE_PATH / "tables" / "pipe_dimensions.csv"
+    COPPER_PIPE_PATH = BASE_PATH / "tables" / "seamless_copper_tubing.csv"
+    copper_pipe_dimensions = pd.read_csv(COPPER_PIPE_PATH)
     pipe_dimensions = pd.read_csv(PIPE_DIMENSIONS_PATH)
     if "Steel" in material:
         pipe_data_inner = pipe_dimensions.loc[pipe_dimensions["Nominal Diameter in"]==nominal_dia_inner & pipe_dimensions["Schedule"]==schedule]
@@ -40,8 +42,8 @@ def calculate_dphx(
         if not ptype or len(ptype) == 0:
             raise ValueError("Pipe type (ptype) cannot be empty for Copper material")
         
-        pipe_data_inner = pipe_dimensions.loc[pipe_dimensions["Nominal Diameter in"]==nominal_dia_inner & pipe_dimensions["Type"]==ptype[-1]]
-        pipe_data_outer = pipe_dimensions.loc[pipe_dimensions["Nominal Diameter in"]==nominal_dia_outer & pipe_dimensions["Type"]==ptype[-1]]
+        pipe_data_inner = copper_pipe_dimensions.loc[(copper_pipe_dimensions["Standard Size in"]==nominal_dia_inner) & (copper_pipe_dimensions["Type"]==ptype[-1])]
+        pipe_data_outer = copper_pipe_dimensions.loc[(copper_pipe_dimensions["Standard Size in"]==nominal_dia_outer) & (copper_pipe_dimensions["Type"]==ptype[-1])]
         
         if pipe_data_inner.empty or pipe_data_outer.empty:
             raise ValueError(f"Pipe dimensions not found for Copper material with nominal diameter inner={nominal_dia_inner}, outer={nominal_dia_outer}, type={ptype[-1]}")
@@ -49,14 +51,17 @@ def calculate_dphx(
         pipe_dict_inner = pipe_data_inner.iloc[0].to_dict()
         pipe_dict_outer = pipe_data_outer.iloc[0].to_dict()
         ID_a = pipe_dict_outer["Outside Diameter in"]
-        ID_p = pipe_dict_inner["Inner Diameter in"]
-        OD_p = pipe_dict_inner["Inner Diameter in"]
+        ID_p = 0.39370079*pipe_dict_inner["Inside Diameter cm"]
+        OD_p = pipe_dict_inner["Inside Diameter cm"]
     ## Givens
 
     # Get pipe material
     pipe_mat = str(material)
 
     # Compare fluid 1 and fluid 2 temps
+
+    fluid1_inlet_temp = float(fluid1_inlet_temp) + 273.15
+    fluid2_inlet_temp = float(fluid2_inlet_temp) + 273.15
 
     if fluid1_inlet_temp > fluid2_inlet_temp:
         # mass flow rates
@@ -78,7 +83,7 @@ def calculate_dphx(
 
         # inlet temps
         Temp1 =  float(fluid2_inlet_temp)               # inlet temp of warmer fluid
-        temp1 = float(fluid1_inlet_temp)                  # inlet temp of cooler fluid
+        temp1 = float(fluid1_inlet_temp)                 # inlet temp of cooler fluid
         
     # Check Larger Flow rate
     
@@ -94,6 +99,7 @@ def calculate_dphx(
     tavg = (Temp1 + temp1) * .5      # tavg based on Temp1 and temp1
     Temp2 = (Temp1 + temp1) * .5      # initial guess Temp2
     temp2 = (Temp1 + temp1) * .5      # initial guess temp2
+    
     while t_loop == True:
     # Get fluid properties
         rho_w = PropsSI('D', 'T', Tavg, 'P', pressure_pa, warm_fluid)
@@ -207,5 +213,33 @@ def calculate_dphx(
         
         T2_o = Temp2
         t2_o = temp2
+        
+        Temp2 = Temp1 * (R_factor - 1) - R_factor * temp1 * (1 - E_counter) / (R_factor * E_counter - 1)
+        temp2 = temp1 + (Temp1 + Temp2) / R_factor
+        
+        print(f"{T2_o}, {t2_o}, {Temp2}, {temp2}")
+        
+        
+        if (abs(T2_o - Temp2) / T2_o < 0.005) & (abs(t2_o - temp2) / t2_o < 0.005):
+            t_loop = False
             
-            
+    # Log Mean Temp Diff
+    
+    LogMeanTempDiff = ((Temp1 - temp2) - (Temp2 - temp1))/ np.log((Temp1 - temp2) / (Temp2 - temp1))
+    
+    # Heat Balance
+    
+    q_w = m_w * cp_w * (Temp1 - Temp2)
+    q_c = m_w * cp_w * (Temp1 - Temp2)
+    
+    q_o = U_o * A_o * LogMeanTempDiff
+    
+    # Fouling Factors
+    
+    # Results
+    
+    results = {
+    "U_o": f"{U_o:.2f}",
+    "q_o": f"{q_o:.2f}"
+    }
+    return results
