@@ -200,8 +200,8 @@ class ShellTubeFrame(BaseFrame):
 
             self.controller.display_results_window("Calculation Results", calculation_results)
 
-        except ValueError:
-            self.results_label.configure(text="Please enter valid inputs in all fields.")
+        except ValueError as e:
+            self.results_label.configure(text=f"An error occurred: {e}")
 
         except Exception as e:
             self.results_label.configure(text=f"An error occurred: {e}")

@@ -34,7 +34,7 @@ def calculate_shelltube(
 
     # Tubing Sizes
     OD_t = float(tube_od)    # Outer D of tubes
-    N_p = float(passes)     # passes
+    N_p = int(passes)     # passes
 
     Length = float(length)       # exchanger length
     
@@ -42,7 +42,11 @@ def calculate_shelltube(
     tube_dimensions = pd.read_csv(TUBE_DIMENSIONS_PATH)
     
     # Use tube_od and tube_bwg to find tube_id
-    tube_data = tube_dimensions.loc[tube_dimensions["tube_od_in"]==OD_t & tube_dimensions["bwg"]==tube_bwg]
+    tube_data = tube_dimensions.loc[(tube_dimensions["tube_od_in"]==OD_t) & (tube_dimensions["bwg"]==int(tube_bwg))]
+    
+    if tube_data.empty:
+        raise ValueError(f"Tube dimensions not found for tube_od_in={OD_t}, bwg={tube_bwg}")
+    
     tube_dict = tube_data.iloc[0].to_dict()
     
     ## Get number of tubes
@@ -50,11 +54,18 @@ def calculate_shelltube(
     
     # Use tube_od_in, pitch_in, pitch_layout, shell_id_in, and n_pass to find Number of Tubes (N_t)
     
-    num_t_data = num_t.loc[num_t["tube_od_in"]==OD_t &
-                           num_t["pitch_in"]==tube_pitch &
-                           num_t["pitch_layout"]==arrangement.lower &
-                           num_t["shell_id_in"]==shell_id
+    if arrangement is None:
+        raise ValueError("Arrangement cannot be None")
+    
+    num_t_data = num_t.loc[(num_t["tube_od_in"]==OD_t) &
+                           (num_t["pitch_in"]==float(tube_pitch)) &
+                           (num_t["pitch_layout"]==arrangement.lower()) &
+                           (num_t["shell_id_in"]==float(shell_id))
                             ]
+    
+    if num_t_data.empty:
+        raise ValueError(f"Tube count data not found for tube_od={OD_t}, pitch={tube_pitch}, arrangement={arrangement}, shell_id={shell_id}")
+    
     num_t_dict = num_t_data.iloc[0].to_dict()
     
     ID_t = tube_dict["tube_id_cm"] / 100  # Inner D of tubes
@@ -63,8 +74,8 @@ def calculate_shelltube(
     # Shell Data
 
     D_s = float(shell_id)     # Shell Inner D
-    # Baffle_Spacing =        # Baffle spacing
     N_b = float(baffles)     # # baffles
+    Baffle_Spacing = Length / (N_b + 1)       # Baffle spacing
     Pitch_T = float(tube_pitch)     # Tube pitch
 
     Clearance = Pitch_T - OD_t     # Clearance between tubes
@@ -75,14 +86,18 @@ def calculate_shelltube(
     R_di = 1.76e-4        # input fouling inner
     R_do = 1.76e-4        # input fouling outer
 
-    # wiswater =             # input if warm fluid is water
-    # ciswater =             # input if cool fluid is water
+    wiswater = True            # input if warm fluid is water
+    ciswater = True             # input if cool fluid is water
 
     # friction factor
 
-    pipe_mat = ""
+    pipe_mat = "Steel"  # Default pipe material
 
-    # epsilon =  
+    # Surface roughness based on pipe material
+    if pipe_mat == "Copper":
+        epsilon = 0.0000015  # Copper pipe roughness in meters
+    else:  # Steel
+        epsilon = 0.000046   # Steel pipe roughness in meters
 
     ## Fluid Properties
     m_w_greater = False        # assume m_w as smaller mass flow
@@ -119,7 +134,7 @@ def calculate_shelltube(
             
         ## Flow Areas
             
-            A_t = N_t * np.pi * ID_t^2 / (4 * N_p)    # flow area tubes
+            A_t = N_t * np.pi * ID_t**2 / (4 * N_p)    # flow area tubes
             A_s = D_s * Clearance * Baffle_Spacing / Pitch_T                # flow area shell
             
             A_s_greater = True
@@ -129,11 +144,11 @@ def calculate_shelltube(
                 
         ## Shell Equivalent Diameters
 
-        if pitch == "square":
-            D_e = (4 * Pitch_T^2 - np.pi * OD_t^2)/(np.pi * OD_t)
+        if arrangement.lower() == "square":
+            D_e = (4 * Pitch_T**2 - np.pi * OD_t**2)/(np.pi * OD_t)
 
-        if pitch == "triangle":
-            D_e = (3.46 * Pitch_T^2 - np.pi * OD_t^2)/(np.pi * OD_t)
+        if arrangement.lower() == "triangular":
+            D_e = (3.46 * Pitch_T**2 - np.pi * OD_t**2)/(np.pi * OD_t)
 
         ## (Route higher mass flow rate through larger flow area)
         if m_w_greater == A_s_greater:
@@ -149,11 +164,11 @@ def calculate_shelltube(
 
             # Nusselt Numbers
             if Re_t < 2200:                                      # Condition for Nu laminar
-                Nu_t = (1.86 * ID_t * Re_t * pr_c / L)^(1/3)   # Nu number
+                Nu_t = (1.86 * ID_t * Re_t * pr_c / Length)**(1/3)   # Nu number
             else:                                                # Condition for Nu turbulent
-                Nu_t = (0.023) * Re_t^(4/5) * pr_c ^ .4        # Nu number
+                Nu_t = (0.023) * Re_t**(4/5) * pr_c ** 0.4        # Nu number
                 
-            Nu_s = 0.36*Re_s^.55 * pr_w^(1/3)
+            Nu_s = 0.36*Re_s**0.55 * pr_w**(1/3)
 
             # Convection Coefficients
             h_i = Nu_t * k_c / ID_t
@@ -174,11 +189,11 @@ def calculate_shelltube(
 
             # Nusselt Numbers
             if Re_t < 2200:                                        # Condition for Nu laminar
-                Nu_t = (1.86 * ID_t * Re_t * pr_w / Length)^(1/3)   # Nu number
+                Nu_t = (1.86 * ID_t * Re_t * pr_w / Length)**(1/3)   # Nu number
             else:                                                # Condition for Nu turbulent
-                Nu_t = (0.023) * Re_t^(4/5) * pr_w ^ .3        # Nu number
+                Nu_t = (0.023) * Re_t**(4/5) * pr_w ** 0.3        # Nu number
                 
-            Nu_s = 0.36*Re_s^.55 * pr_c^(1/3)
+            Nu_s = 0.36*Re_s**0.55 * pr_c**(1/3)
 
             # Convection Coefficients
             h_i = Nu_t * k_w / ID_t
@@ -187,7 +202,7 @@ def calculate_shelltube(
             h_o = Nu_s * k_c / D_e
 
         ## Exchanger Coefficients
-        U_o = (1/h_t    + 1/h_o) ^ -1  # Overall convection
+        U_o = (1/h_t + 1/h_o) ** -1  # Overall convection
 
         ## Capacitances
         h_cap_w = m_w * cp_w     # heat capacitance warm
@@ -201,9 +216,9 @@ def calculate_shelltube(
 
         # Calculations for C1, C2, C3, and S
 
-        Const1 = np.exp(U_o * A_o / h_cap_c * (R_factor^2 + 1)^.5)
-        Const2 = (R_factor + 1 - (R_factor^2 + 1)^.5)
-        Const3 = (R_factor + 1 + (R_factor^2 + 1)^.5)
+        Const1 = np.exp(U_o * A_o / h_cap_c * (R_factor**2 + 1)**0.5)
+        Const2 = (R_factor + 1 - (R_factor**2 + 1)**0.5)
+        Const3 = (R_factor + 1 + (R_factor**2 + 1)**0.5)
 
         S_factor = 2*(1 - Const1) / (Const2 - Const1*Const3)
 
@@ -238,13 +253,13 @@ def calculate_shelltube(
 
     ## Heat Balance for the Exchanger
 
-    F_factor = (R_factor^2 + 1)^.5 * np.log((1-S_factor)/(1-R_factor*S_factor)) / ((R_factor - 1)* np.log((2 - S_factor*(R_factor + 1 - (R_factor^2 + 1)^.5)) / (2 - S_factor *(R_factor + 1 + (R_factor^2 + 1)^.5))));           # Correction Factor
+    F_factor = (R_factor**2 + 1)**0.5 * np.log((1-S_factor)/(1-R_factor*S_factor)) / ((R_factor - 1)* np.log((2 - S_factor*(R_factor + 1 - (R_factor**2 + 1)**0.5)) / (2 - S_factor *(R_factor + 1 + (R_factor**2 + 1)**0.5))))           # Correction Factor
 
     q = U_o * A_o * F_factor * LogMeanTempDiff        # Heat transferred
 
     ## Fouling Factors and Design Coefficient
 
-    U_old = (1/U_o + R_di + R_do) ^ -1  # heat transfer coefficient after 1 year
+    U_old = (1/U_o + R_di + R_do) ** -1  # heat transfer coefficient after 1 year
 
     q_old = q * U_old / U_o             # q afer 1 year
 
@@ -256,9 +271,9 @@ def calculate_shelltube(
 
     # Calculations for C1, C2, C3, and S
 
-    Const1 = np.exp(U_old * A_o / h_cap_c * (R_factor^2 + 1)^.5);
-    Const2 = (R_factor + 1 - (R_factor^2 + 1)^.5);
-    Const3 = (R_factor + 1 + (R_factor^2 + 1)^.5);
+    Const1 = np.exp(U_old * A_o / h_cap_c * (R_factor**2 + 1)**0.5);
+    Const2 = (R_factor + 1 - (R_factor**2 + 1)**0.5);
+    Const3 = (R_factor + 1 + (R_factor**2 + 1)**0.5);
 
     S_factor = 2*(1 - Const1) / (Const2 - Const1*Const3);
 
@@ -277,24 +292,19 @@ def calculate_shelltube(
     if Re_t < 2200:      # laminar condition
         f_t = 64 / Re_t;        # f tubes
     else:
-        f_t = 0.25 / (np.log10(epsilon/(3.7*ID_t) - 5.74/Re_t^0.9))^2;      # f tubes
+        f_t = 0.25 / (np.log10(epsilon/(3.7*ID_t) - 5.74/Re_t**0.9))**2;      # f tubes
 
     f_s = np.exp(0.576 - 0.19 * np.log(Re_s));        # f shell
 
     ## Pressure Drop Calculations
 
     if m_w_greater == A_s_greater:
-        deltaP_s = rho_w * V_s^2 * D_s * f_s * (N_b + 1) / (2 * D_e)   # pressure drop in shell
-        deltaP_t = rho_c * V_t^2 * (f_t * Length / ID_t + 4)  * N_p / 2     # pressure drop in tubes
+        deltaP_s = rho_w * V_s**2 * D_s * f_s * (N_b + 1) / (2 * D_e)   # pressure drop in shell
+        deltaP_t = rho_c * V_t**2 * (f_t * Length / ID_t + 4)  * N_p / 2     # pressure drop in tubes
 
     else:
-        deltaP_s = rho_c * V_s^2 * D_s * f_s * (N_b + 1) / (2 * D_e)   # pressure drop in shell
-        deltaP_t = rho_w * V_t^2 * (f_t * Length / ID_t + 4)  * N_p / 2     # pressure drop in tubes
+        deltaP_s = rho_c * V_s**2 * D_s * f_s * (N_b + 1) / (2 * D_e)   # pressure drop in shell
+        deltaP_t = rho_w * V_t**2 * (f_t * Length / ID_t + 4)  * N_p / 2     # pressure drop in tubes
 
-    return([U_o , U_old],
-           [q, q_old],
-           [Temp2, T2_old],
-           [temp2, t2_old],
-           ["deltaP_s", deltaP_s]
-           ["deltaP_t", deltaP_t])
+    return(f"{U_o:.2f},   {U_old:.2f }]")
 
