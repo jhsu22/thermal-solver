@@ -28,6 +28,6 @@ A Python-based thermal systems solver intended to solve common thermal systems, 
 ## How to Build/Install the App
 Clone the git repository in your code editor of choice, and run main.py! 
 
-Users on macOS will not be able to run the font without installing it onto your computer
+Users on macOS will not be able to run the app with the custom font without installing it onto your computer
 
 A full desktop release is in the works :)
