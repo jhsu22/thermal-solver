@@ -52,10 +52,14 @@ def calculate_dphx(
         pipe_dict_inner = pipe_data_inner.iloc[0].to_dict()
         pipe_dict_outer = pipe_data_outer.iloc[0].to_dict()
 
-        # Convert inches to meters
-        ID_p_m = pipe_dict_inner["Inside Diameter cm"] * 100
-        OD_p_m = pipe_dict_inner["Outside Diameter cm"] * 100
-        ID_a_m = pipe_dict_outer["Inside Diameter cm"] * 100
+        # Convert cm to meters and ensure values are floats before calculation
+        try:
+            ID_p_m = float(pipe_dict_inner["Inside Diameter cm"]) / 100.0  # Divide by 100 for cm -> m
+            OD_p_m = float(pipe_dict_inner["Outside Diameter cm"]) / 100.0  # Divide by 100 for cm -> m
+            ID_a_m = float(pipe_dict_outer["Inside Diameter cm"]) / 100.0  # Divide by 100 for cm -> m
+        except ValueError:
+            # This handles cases where the CSV might have unexpected non-numeric data
+            raise ValueError("Could not convert pipe dimensions from CSV to numbers. Check the CSV file for errors.")
 
     elif "Copper" in material:
         if not ptype or len(ptype) == 0:
@@ -252,18 +256,34 @@ def calculate_dphx(
     # Log Mean Temp Diff (Counter Flow)
     deltaT1 = Temp1 - temp2 # Hot in - Cold out
     deltaT2 = Temp2 - temp1 # Hot out - Cold in
-    # Prevent division by zero or log(negative) if deltaTs are equal or cross
-    if deltaT1 <= 0 or deltaT2 <= 0:
-         LogMeanTempDiff = 0 # Or handle appropriately, indicates temp cross or zero difference
-    elif abs(deltaT1 - deltaT2) < 1e-6: # Check if deltaTs are very close
-         LogMeanTempDiff = deltaT1 # Or deltaT2
+
+    # Check for non-positive temperature differences or temperature cross
+    if deltaT1 <= 1e-6 or deltaT2 <= 1e-6:  # Use a small epsilon instead of zero
+        LogMeanTempDiff = 0  # Assign 0 if temps cross or difference is negligible
+        print("Warning: Temperature difference at ends is zero or negative. LMTD is set to 0.")
+
+    # Check if deltaTs are almost equal (avoids log(1) issues)
+    elif abs(deltaT1 - deltaT2) < 1e-6:  # Use a small epsilon
+        LogMeanTempDiff = deltaT1  # Or deltaT2, they are essentially the same
+
     else:
-         LogMeanTempDiff = (deltaT1 - deltaT2) / np.log(deltaT1 / deltaT2)
+        # Calculate LMTD only if arguments are valid
+        try:
+            LogMeanTempDiff = (deltaT1 - deltaT2) / np.log(deltaT1 / deltaT2)
+        except ValueError:
+            LogMeanTempDiff = 0  # Fallback if log calculation still fails
+            print("Warning: Logarithm calculation for LMTD failed. LMTD is set to 0.")
 
     # Verify Heat Balance
     q_w = m_w * cp_w * (Temp1 - Temp2) # Heat lost by warm
     q_c = m_c * cp_c * (temp2 - temp1) # Heat gained by cold
-    q_lmtd = U_o * A_o_total * LogMeanTempDiff # Heat calculated via LMTD
+
+    # Calculate q using LMTD only if LMTD is validly calculated
+    if LogMeanTempDiff > 0:
+        q_lmtd = U_o * A_o_total * LogMeanTempDiff  # Heat calculated via LMTD
+    else:
+        q_lmtd = q  # Use q calculated from effectiveness if LMTD is invalid
+        print("Warning: Using effectiveness-based q due to invalid LMTD.")
 
     # (Add Fouling Calculations here, recalculating U, q, and temps)
 

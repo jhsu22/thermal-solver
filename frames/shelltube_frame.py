@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from frames import BaseFrame
+from fractions import Fraction
 from solvers.shelltube_solver import calculate_shelltube
 
 
@@ -9,6 +10,16 @@ class ShellTubeFrame(BaseFrame):
 
         input_frame = ctk.CTkFrame(self.content_frame, fg_color="transparent")
         input_frame.pack(pady=10, padx=20, fill="both", expand=True)
+
+        self.pitch_arrangements = {
+            "Triangular": ["15/16", "1", "1 1/4"],
+            "Square": ["1", "1 1/4"]
+        }
+
+        self.bwg_values = {
+            "0.75": ["10", "11", "12", "13", "14", "15", "16", "17", "18"],
+            "1": ["8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
+        }
 
         input_frame.grid_columnconfigure((0, 1, 2, 3), weight=1, uniform="group1")
 
@@ -36,7 +47,8 @@ class ShellTubeFrame(BaseFrame):
             values=["0.75", "1"],
             text_color="black", font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
-            dropdown_text_color="black"
+            dropdown_text_color="black",
+            command=self.tube_od_selected
         )
         self.tube_od_entry.grid(row=2, column=1, sticky="ew", padx=5, pady=7)
 
@@ -46,10 +58,10 @@ class ShellTubeFrame(BaseFrame):
         tube_bwg_label.grid(row=3, column=0, sticky="w", padx=5, pady=7)
         self.tube_bwg_selection = ctk.CTkOptionMenu(
             input_frame,
-            values=["8","9","10","11","12","13","14","15","16","17","18"],
+            values=["10", "11", "12", "13", "14", "15", "16", "17", "18"],
             text_color="black", font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
-            dropdown_text_color="black"
+            dropdown_text_color="black",
         )
         self.tube_bwg_selection.grid(row=3, column=1, sticky="ew", padx=5, pady=7)
 
@@ -87,7 +99,8 @@ class ShellTubeFrame(BaseFrame):
             input_frame,
             values=["Triangular", "Square"], text_color="black", font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
-            dropdown_text_color="black"
+            dropdown_text_color="black",
+            command=self.arrangement_selected
         )
         self.arrangement_selection.grid(row=2, column=3, sticky="ew", padx=5, pady=7)
 
@@ -96,7 +109,7 @@ class ShellTubeFrame(BaseFrame):
         tube_pitch_label.grid(row=3, column=2, sticky="w", padx=15, pady=7)
         self.tube_pitch_entry = ctk.CTkOptionMenu(
             input_frame,
-            values=["0.9375", "1", "1.25"],
+            values=["15/16", "1", "1 1/4"],
             text_color="black", font=ctk.CTkFont(size=14),
             dropdown_fg_color="#bfbdbd", dropdown_hover_color="#999999",
             dropdown_text_color="black"
@@ -173,6 +186,21 @@ class ShellTubeFrame(BaseFrame):
         self.results_label.grid(row=12, column=0, columnspan=4)
         self.update_placeholders()
 
+        self.arrangement_selected(self.arrangement_selection.get())
+        self.tube_od_selected(self.tube_od_entry.get())
+
+    def arrangement_selected(self, arrangement):
+        new_values = self.pitch_arrangements.get(arrangement, [])
+        self.tube_pitch_entry.configure(values=new_values)
+        if new_values:
+            self.tube_pitch_entry.set(new_values[0])
+
+    def tube_od_selected(self, tube_od):
+        new_values = self.bwg_values.get(tube_od, [])
+        self.tube_bwg_selection.configure(values=new_values)
+        if new_values:
+            self.tube_bwg_selection.set(new_values[0])
+
     def update_placeholders(self):
         if self.controller.unit_system == "SI":
             self.length_entry.configure(placeholder_text="m")
@@ -214,7 +242,7 @@ class ShellTubeFrame(BaseFrame):
                 cool_fluid=cool_fluid, cool_fluid_inlet_temp=cool_fluid_inlet_temp,
                 cool_fluid_mass_flow=cool_fluid_mass_flow
             )
-            results_text = "\n".join([f"{key.title()}: {value}" for key, value in calculation_results.items()])
+            results_text = "\n".join([f"{key.replace('_', ' ').title()}: {value}" for key, value in calculation_results.items()])
             self.controller.display_results_window("Calculation Results",
                                                    f"==========================================\nSHELL TUBE HX RESULTS\n"
                                                    f"==========================================\n{results_text}")

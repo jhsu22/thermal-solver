@@ -189,6 +189,7 @@ class PlateFrameFrame(BaseFrame):
         self.results_label.grid(row=10, column=0, columnspan=4)
         self.update_placeholders()
 
+
     def update_placeholders(self):
         if self.controller.unit_system == "SI":
             self.length_input.configure(placeholder_text="m")
