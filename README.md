@@ -25,7 +25,7 @@ A Python-based thermal systems solver intended to solve common thermal systems, 
   
 <img width="623" height="416" alt="image" src="https://github.com/user-attachments/assets/4feb9449-b3e5-4c7c-9463-d8c32df84218" />
 
-## How to Build/Install the App
+## How to Run
 Clone the git repository in your code editor of choice, and run main.py! 
 
 Users on macOS will not be able to run the app with the custom font without installing it onto your computer
