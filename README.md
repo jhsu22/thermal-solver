@@ -18,7 +18,7 @@ A Python-based thermal systems solver intended to solve common thermal systems, 
 - Fluid Outlet Temps and Pressures, Exchanger Coefficient, Heat Transfer Rate
 
 **Shell and Tube Heat Exchangers**
-- Exchanger Coefficient for both new and 1 y/o fould exchangers
+- Exchanger Coefficient for both new and 1 y/o fouled exchangers
 
 **Heat Pipes**
 - Capillary, Sonic, Entrainment, and Boiling Limits
