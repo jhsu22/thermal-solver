@@ -9,6 +9,7 @@ Created as a project for Cal Poly Pomona's ME 4990 course
 
 # Import custom font (library not macOS compatible)
 import sys
+import os
 if sys.platform != "darwin":
     from tkextrafont import Font
 
@@ -26,6 +27,18 @@ from frames.shelltube_frame import ShellTubeFrame
 from frames.plateframe_frame import PlateFrameFrame
 from frames.heatpipe_frame import HeatPipeFrame
 
+# Helper function to get correct asset path
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = Path(sys._MEIPASS)
+    except Exception:
+        # _MEIPASS attribute not set, running in normal Python environment
+        base_path = Path(__file__).parent # Use script's directory
+
+    return base_path / relative_path
+
 class ThermalSolver(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -37,6 +50,7 @@ class ThermalSolver(ctk.CTk):
         self.BASE_PATH = Path(__file__).parent
         self.FONT_PATH = self.BASE_PATH / "assets" / "fonts" / "PixelifySans.ttf"
         self.IMAGE_PATH = self.BASE_PATH / "assets" / "images"
+        self.THEME_PATH = resource_path("theme.json")  # Get theme path
 
         # Load custom font (NOT MACOS COMPATIBLE)
         if sys.platform != "darwin":
@@ -83,9 +97,14 @@ class ThermalSolver(ctk.CTk):
 
     # Function to load and process images
     def load_image(self, name, size):
-        image_path = self.IMAGE_PATH / name
-        image = Image.open(image_path).resize(size, resample=Image.Resampling.NEAREST)
-        return ctk.CTkImage(light_image=image, size=size)
+        image_path = resource_path(Path("assets") / "images" / name)
+        try:
+            image = Image.open(image_path).resize(size, resample=Image.Resampling.NEAREST)
+            return ctk.CTkImage(light_image=image, size=size)
+        except FileNotFoundError:
+            print(f"Error: Image file not found at {image_path}")
+            # Return a placeholder or raise an error maybe
+            return None
 
     # Function to bring a frame to the front
     def show_frame(self, page_name):
@@ -128,6 +147,8 @@ class ThermalSolver(ctk.CTk):
 
 if __name__ == "__main__":
     ctk.set_appearance_mode("Light")
-    ctk.set_default_color_theme("theme.json")
+    # Use the determined theme path here!
+    theme_file_path = resource_path("theme.json")
+    ctk.set_default_color_theme(str(theme_file_path)) # <-- Pass the full path
     app = ThermalSolver()
     app.mainloop()

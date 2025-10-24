@@ -1,5 +1,4 @@
 import numpy as np
-from solvers.waterinterpolator import WaterInterp
 from CoolProp.CoolProp import PropsSI
 
 # Conversion Factors
